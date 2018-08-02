@@ -1,5 +1,7 @@
 package com.gousslegend.deepov;
 
+import java.util.Scanner;
+
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
 import com.gousslegend.player.Deepov;
@@ -14,7 +16,7 @@ public class Game
 
 	public Game()
 	{
-		this(true);
+		this(true, false);
 	}
 
 	public void play()
@@ -32,10 +34,10 @@ public class Game
 		System.out.println("CHECKMATE");
 	}
 
-	public Game(boolean showBoard)
+	public Game(boolean showBoard, boolean chess960)
 	{
 		myBoard = new ArrayBoard();
-		myBoard.setupBoard();
+		myBoard.setupBoard(chess960);
 
 		blackPlayer = new Human("BlackHuman", myBoard);
 		whitePlayer = new Deepov(myBoard);
@@ -106,7 +108,17 @@ public class Game
 
 	public static void main(String[] args)
 	{
-		Game game = new Game(false);
+		String input;
+		// The scanner can't be closed without breaking all the other scanners used in the project
+		// All the scanners should be replaced with a different input system.
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Click enter if you want to play normal chess.");
+		System.out.println("If you want to play Chess 960, type anything, then click enter.");
+		input = sc.nextLine();
+		
+		boolean chess960 = !input.isEmpty();
+		
+		Game game = new Game(false, chess960);
 		game.play();
 	}
 

@@ -18,6 +18,15 @@ public abstract class Piece
 	protected int moveCounter = 0;
 	protected boolean isPinned = false;
 
+	public enum ChessPieceType {
+		PAWN,
+		ROOK,
+		KNIGHT,
+		BISHOP,
+		QUEEN,
+		KING
+	}
+	
 	public boolean isPinned()
 	{
 		return isPinned;

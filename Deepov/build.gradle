@@ -19,6 +19,8 @@ dependencies {
   // mandatory dependencies for using Spock
   compile "org.codehaus.groovy:groovy-all:2.0.7"
   testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 }
 
 // define the src folders as they are non-standard for gradle/maven projects

@@ -2,6 +2,7 @@ package com.gousslegend.deepov.board;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Move;
@@ -12,6 +13,7 @@ import com.gousslegend.deepov.pieces.King;
 import com.gousslegend.deepov.pieces.Knight;
 import com.gousslegend.deepov.pieces.Pawn;
 import com.gousslegend.deepov.pieces.Piece;
+import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
 import com.gousslegend.deepov.pieces.Queen;
 import com.gousslegend.deepov.pieces.Rook;
 
@@ -189,34 +191,91 @@ public abstract class Board
 
 	}
 	
-	public void setupBoard()
+	public void setupBoard(boolean chess960)
 	{
-		//Add Pawns
-		for(int i = 0; i<=7; i++)
-		{
-			addPiece(new Pawn(new Position(i,1), this, Color.WHITE));
-			addPiece(new Pawn(new Position(i,6), this, Color.BLACK));
+		ChessPieceType[] backRowOrder = 
+			{ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.BISHOP, ChessPieceType.QUEEN, 
+					ChessPieceType.KING, ChessPieceType.BISHOP, ChessPieceType.KNIGHT, ChessPieceType.ROOK };
+		
+		if(chess960) {
+			do {
+				shuffleArray(backRowOrder);
+			} while(!validChess960Placement(backRowOrder));
 		}
+		
+		//Add all the pieces Pawns
+		for(int i = 0; i < 8; i++)
+		{
+			//White side
+			addPiece(getPeice(backRowOrder[i], new Position(i,0), this, Color.WHITE));
+			addPiece(getPeice(ChessPieceType.PAWN, new Position(i,1), this, Color.WHITE));
+			
+			//Black side
+			addPiece(getPeice(ChessPieceType.PAWN, new Position(i,6), this, Color.BLACK));
+			addPiece(getPeice(backRowOrder[i], new Position(i,7), this, Color.BLACK));
+		}
+	}
+	
+	private static void shuffleArray(ChessPieceType[] array)
+	{
+	    int index;
+	    ChessPieceType temp;
+	    Random random = new Random();
+	    for (int i = array.length - 1; i > 0; i--)
+	    {
+	        index = random.nextInt(i + 1);
+	        temp = array[index];
+	        array[index] = array[i];
+	        array[i] = temp;
+	    }
+	}
 
-		addPiece(new Rook(new Position(0,0), this, Color.WHITE));
-		addPiece(new Rook(new Position(7,0), this, Color.WHITE));
-		addPiece(new Rook(new Position(0,7), this, Color.BLACK));
-		addPiece(new Rook(new Position(7,7), this, Color.BLACK));
+	private boolean validChess960Placement(ChessPieceType[] rowOrder) {
+		boolean rookBeforeKing = false;
+		boolean rookAfterKing = false;
+		boolean foundKing = false;
+		
+		// The king should be between both the rooks.
+		for(ChessPieceType t : rowOrder) {
+			if(t==ChessPieceType.ROOK) {
+				if(foundKing) {
+					rookBeforeKing = true;
+				} else {
+					rookAfterKing = true;
+				}
+			}
+			if(t==ChessPieceType.KING) {
+				foundKing = true;
+			}
+		}
+		return rookBeforeKing && rookAfterKing;
+	}
 
-		addPiece(new Knight(new Position(1,0), this, Color.WHITE));
-		addPiece(new Knight(new Position(6,0), this, Color.WHITE));
-		addPiece(new Knight(new Position(1,7), this, Color.BLACK));
-		addPiece(new Knight(new Position(6,7), this, Color.BLACK));
-
-		addPiece(new Bishop(new Position(2,0), this, Color.WHITE));
-		addPiece(new Bishop(new Position(5,0), this, Color.WHITE));
-		addPiece(new Bishop(new Position(2,7), this, Color.BLACK));
-		addPiece(new Bishop(new Position(5,7), this, Color.BLACK));
-
-		addPiece(new Queen(new Position(3,0), this, Color.WHITE));
-		addPiece(new Queen(new Position(3,7), this, Color.BLACK));
-		addPiece(new King(new Position(4,0), this, Color.WHITE));
-		addPiece(new King(new Position(4,7), this, Color.BLACK));
+	private Piece getPeice(ChessPieceType type, Position position, Board board, Color color) {
+		Piece p = null;
+		switch (type) {
+		case PAWN:
+			p = new Pawn(position, board, color);
+			break;
+		case ROOK:
+			p = new Rook(position, board, color);
+			break;
+		case KNIGHT:
+			p = new Knight(position, board, color);
+			break;
+		case BISHOP:
+			p = new Bishop(position, board, color);
+			break;
+		case KING:
+			p = new King(position, board, color);
+			break;
+		case QUEEN:
+			p = new Queen(position, board, color);
+			break;
+		default:
+			throw new IllegalArgumentException(type != null ? "The type " + type + " can't be retrieved and needs to be added to this method." : "Null is not a valid type.");
+		}
+		return p;
 	}
 
 	public String toString()
