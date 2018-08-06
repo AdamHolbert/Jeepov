@@ -1,6 +1,7 @@
 package com.gousslegend.deepov.pieces;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -10,6 +11,7 @@ import org.junit.Test;
 
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.board.ArrayBoard;
+import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
 
 public class TestCases {
 
@@ -29,33 +31,80 @@ public class TestCases {
 		ArrayBoard myBoard = new ArrayBoard();
 		myBoard.setupBoard(false);
 		
-		assertArrayEquals(expectedCharArray, getBackRow(myBoard).toCharArray());
+		assertArrayEquals(expectedCharArray, getRowAsString(7, myBoard).toCharArray());
 	}
 	
 	@Test
 	public void allChess960BoardSetupCheck() {
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
-		int i = 0;
-		do {
+		for(int i = 0; i < 1000000; i++) {
 			ArrayBoard myBoard = new ArrayBoard();
 			myBoard.setupBoard(true);
-			map.put(getBackRow(myBoard), false);
-			if(i++ > 1000000) {
-				// this has the unlikely potential to throw a false fail.
-				// the variable 'i' commonly peaks at 2000
-				fail("The setupBoard function does not cover all possible chess 960 board configurations");
-				
-			}
-		} while(map.size() < 960);
+			map.put(getRowAsString(7, myBoard), false);
+		}
 		
-		// Success if test makes it this far
-		assertTrue(true);
+		// this has the unlikely potential to throw a false fail.
+		// the variable 'i' commonly peaks at 2000
+		assertEquals(map.size(), 960);
 	}
 	
-	public String getBackRow(ArrayBoard myBoard){
+	@Test
+	public void allChess960bothSideMirrored() {
+		ArrayBoard myBoard = new ArrayBoard();
+		myBoard.setupBoard(true);
+		assertEquals(getRowAsString(7, myBoard), getRowAsString(0, myBoard));
+	}
+		
+	@Test
+	public void chess960KingBettenRook() {
+		ArrayBoard myBoard = new ArrayBoard();
+		myBoard.setupBoard(true);
+		boolean rookBeforeKing = false;
+		boolean rookAfterKing = false;
+		boolean foundKing = false;
+		
+		// The king should be between both the rooks.
+		for(char peice : getRowAsString(7, myBoard).toCharArray()) {
+			if(peice == (new Rook()).getChar().charAt(0)) {
+				if(foundKing) {
+					rookBeforeKing = true;
+				} else {
+					rookAfterKing = true;
+				}
+			}
+			if(peice == (new King()).getChar().charAt(0)) {
+				foundKing = true;
+			}
+		}
+		assertTrue(rookBeforeKing && rookAfterKing);
+	}
+	
+	@Test
+	public void chess960BishupsOnDifferentColors() {
+		ArrayBoard myBoard = new ArrayBoard();
+		myBoard.setupBoard(true);
+		boolean bishopOnOdd = false;
+		boolean bishopOnEven = false;
+		
+		// A bishop should be both on a black square and a white square
+		int i = 0;
+		for(char peice : getRowAsString(7, myBoard).toCharArray()) {
+			if(peice == (new Bishop()).getChar().charAt(0)) {
+				if(i%2 == 0) {
+					bishopOnOdd = true;
+				} else {
+					bishopOnEven = true;
+				}
+			}
+			i++;
+		}
+		assertTrue(bishopOnEven && bishopOnOdd);
+	}
+	
+	public String getRowAsString(int row, ArrayBoard myBoard){
 		String backRow = "";
 		for(int i = 0; i < 8; i++) {
-			Piece piece = myBoard.getPiece(new Position(i, 7));
+			Piece piece = myBoard.getPiece(new Position(i, row));
 			if(piece != null) {
 				backRow += piece.getChar().charAt(0);
 			} else {

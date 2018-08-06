@@ -234,8 +234,12 @@ public abstract class Board
 		boolean rookBeforeKing = false;
 		boolean rookAfterKing = false;
 		boolean foundKing = false;
+		boolean bishopOnEven = false;
+		boolean bishopOnOdd = false;
 		
 		// The king should be between both the rooks.
+		// A bishop should be both on a black square and a white square
+		int i = 0;
 		for(ChessPieceType t : rowOrder) {
 			if(t==ChessPieceType.ROOK) {
 				if(foundKing) {
@@ -247,8 +251,16 @@ public abstract class Board
 			if(t==ChessPieceType.KING) {
 				foundKing = true;
 			}
+			if(t==ChessPieceType.BISHOP) {
+				if(i%2 == 0) {
+					bishopOnOdd = true;
+				} else {
+					bishopOnEven = true;
+				}
+			}
+			i++;
 		}
-		return rookBeforeKing && rookAfterKing;
+		return rookBeforeKing && rookAfterKing && bishopOnEven && bishopOnOdd;
 	}
 
 	private Piece getPeice(ChessPieceType type, Position position, Board board, Color color) {
