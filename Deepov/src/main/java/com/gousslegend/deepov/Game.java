@@ -1,6 +1,6 @@
 package com.gousslegend.deepov;
 
-import java.util.Scanner;
+import java.security.InvalidParameterException;
 
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
@@ -13,10 +13,36 @@ public class Game
 	private Board myBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
+	private UserInterface ui;
 
-	public Game()
+	public enum ChessModes {
+			STANDARD,
+			CHESS960
+	}
+	
+	public Game(UserInterface ui)
 	{
-		this(true, false);
+		setUI(ui);
+		setMyBoard(new ArrayBoard());
+		
+		ChessModes mode = null;
+		while(mode == null) {
+			mode = this.ui.getChessMode(ChessModes.values());
+		}
+		myBoard.setupBoard(mode);
+
+		setWhitePlayer(this.ui.getNewPlayer(Color.WHITE, myBoard));
+		setBlackPlayer(this.ui.getNewPlayer(Color.BLACK, myBoard));
+
+		this.ui.updateBoard(myBoard);
+	}
+	
+	public Game(UserInterface ui, ChessModes mode, Player whitePlayer, Player blackPlayer) {
+		setUI(ui);
+		setMyBoard(new ArrayBoard());
+		myBoard.setupBoard(mode);
+		setBlackPlayer(blackPlayer);
+		setWhitePlayer(whitePlayer);
 	}
 
 	public void play()
@@ -24,30 +50,16 @@ public class Game
 		while(getWinner() == null)
 		{
 			Player playerToPLay = getPlayer(myBoard.getColorToPlay());
-			System.out.println(playerToPLay + " it s your turn to play");
-			System.out.println(myBoard);
-
+			ui.setTurn(getPlayer(myBoard.getColorToPlay()));
+			ui.updateBoard(myBoard);
+			
 			Move move = playerToPLay.takeTurn();
 			myBoard.executeMove(move);
 		}
 
 		System.out.println("CHECKMATE");
 	}
-
-	public Game(boolean showBoard, boolean chess960)
-	{
-		myBoard = new ArrayBoard();
-		myBoard.setupBoard(chess960);
-
-		blackPlayer = new Human("BlackHuman", myBoard);
-		whitePlayer = new Deepov(myBoard);
-
-		if (showBoard)
-		{
-			System.out.print(myBoard);
-		}
-	}
-
+	
 	public Player getPlayer(Color color)
 	{
 		return color == Color.WHITE ? whitePlayer : blackPlayer;
@@ -63,63 +75,6 @@ public class Game
 		{
 			return null;
 		}
-	}
-
-	public Game(boolean showBoard, String fen)
-	{
-		// myBoard = new MapBoard(fen);
-		myBoard = new ArrayBoard(fen);
-
-		if (showBoard)
-		{
-			System.out.print(myBoard);
-		}
-	}
-
-	public Player getWhitePlayer()
-	{
-		return whitePlayer;
-	}
-
-	public void setWhitePlayer(Player whitePlayer)
-	{
-		this.whitePlayer = whitePlayer;
-	}
-
-	public Player getBlackPlayer()
-	{
-		return blackPlayer;
-	}
-
-	public void setBlackPlayer(Player blackPlayer)
-	{
-		this.blackPlayer = blackPlayer;
-	}
-
-	public Board getBoard()
-	{
-		return myBoard;
-	}
-
-	public void setBoard(Board board)
-	{
-		myBoard = board;
-	}
-
-	public static void main(String[] args)
-	{
-		String input;
-		// The scanner can't be closed without breaking all the other scanners used in the project
-		// All the scanners should be replaced with a different input system.
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Click enter if you want to play normal chess.");
-		System.out.println("If you want to play Chess 960, type anything, then click enter.");
-		input = sc.nextLine();
-		
-		boolean chess960 = !input.isEmpty();
-		
-		Game game = new Game(false, chess960);
-		game.play();
 	}
 
 	public int divide(int depth)
@@ -259,4 +214,50 @@ public class Game
 
 		return data;
 	}
+	
+	private void setUI(UserInterface ui) {
+		if(ui == null) {
+			throw new InvalidParameterException("The user interface passed in can't be null");
+		}
+		this.ui = ui;
+	}
+
+	private void setMyBoard(Board myBoard) {
+		if(myBoard == null) {
+			throw new InvalidParameterException("The board passed in can't be null");
+		}
+		this.myBoard = myBoard;
+		
+	}
+
+	public Player getWhitePlayer()
+	{
+		return whitePlayer;
+	}
+
+	public void setWhitePlayer(Player whitePlayer)
+	{
+		this.whitePlayer = whitePlayer;
+	}
+
+	public Player getBlackPlayer()
+	{
+		return blackPlayer;
+	}
+
+	public void setBlackPlayer(Player blackPlayer)
+	{
+		this.blackPlayer = blackPlayer;
+	}
+
+	public Board getBoard()
+	{
+		return myBoard;
+	}
+
+	public void setBoard(Board board)
+	{
+		myBoard = board;
+	}
+
 }
