@@ -5,6 +5,8 @@ import com.gousslegend.deepov.Game;
 public class Driver {
 
 	public static void main(String[] args) {
-		Game g = new Game();
+		System.out.println("In console project");
+		Game g = new Game(new UIConsole());
+		g.play();
 	}
 }
