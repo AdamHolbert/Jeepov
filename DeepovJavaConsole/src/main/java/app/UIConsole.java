@@ -27,7 +27,7 @@ public class UIConsole implements UserInterface {
 	}
 
 	public Player getNewPlayer(Color playerColor, Board myBoard) {
-		Player p = new Human("Human controlling " + playerColor.toString(), myBoard);
+		Player p = new Human("Human" + playerColor.toString(), myBoard);
 		if(playerColor == Color.BLACK) {
 			p = new Deepov(myBoard);
 		}
