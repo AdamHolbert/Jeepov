@@ -57,7 +57,7 @@ public class TestCases {
 	public void allChess960bothSideMirrored() {
 		ArrayBoard myBoard = new ArrayBoard();
 		myBoard.setupBoard(true);
-		assertEquals(getRowAsString(7, myBoard), getRowAsString(0, myBoard));
+		assertEquals(getRowAsString(7, myBoard).toLowerCase(), getRowAsString(0, myBoard).toLowerCase());
 	}
 		
 	@Test
