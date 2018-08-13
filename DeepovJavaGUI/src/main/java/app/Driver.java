@@ -8,6 +8,8 @@ import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
+
+import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 
 public class Driver extends Application{
