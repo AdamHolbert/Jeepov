@@ -166,22 +166,22 @@ public class Utils
 		return pieces;
 	}
 
-	public static void main(String[] args)
-	{
-		/*
-		 * //String fen =
-		 * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-		 * 
-		 * Board board = Utils.getBoardFromFen(fen);
-		 */
-
-		String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
-		Game game = new Game(true, fen);
-		Board board = game.getBoard();
-		String fen2 = generateFen(board);
-
-		System.out.println(fen);
-		System.out.println(fen2);
-		System.out.println(fen2.equals(fen));
-	}
+//	public static void main(String[] args)
+//	{
+//		/*
+//		 * //String fen =
+//		 * "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+//		 * 
+//		 * Board board = Utils.getBoardFromFen(fen);
+//		 */
+//
+//		String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
+//		Game game = new Game(true, fen);
+//		Board board = game.getBoard();
+//		String fen2 = generateFen(board);
+//
+//		System.out.println(fen);
+//		System.out.println(fen2);
+//		System.out.println(fen2.equals(fen));
+//	}
 }

@@ -185,19 +185,19 @@ public class Deepov extends Player
 		return -99999;
 	}
 
-	public static void main(String[] args)
-	{
-		String fen = "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5Q2/PPPP1PPP/RNB1KBNR w KQkq - 0 1";
-
-		Board board = new ArrayBoard(fen);
-		System.out.println(board);
-
-		Deepov deepov = new Deepov(board);
-		System.out.println(deepov.negaMaxRoot(3));
-		System.out.println(deepov.myBestmove);
-		board.executeMove(deepov.myBestmove);
-		System.out.println(board);
-
-
-	}
+//	public static void main(String[] args)
+//	{
+//		String fen = "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5Q2/PPPP1PPP/RNB1KBNR w KQkq - 0 1";
+//
+//		Board board = new ArrayBoard(fen);
+//		System.out.println(board);
+//
+//		Deepov deepov = new Deepov(board);
+//		System.out.println(deepov.negaMaxRoot(3));
+//		System.out.println(deepov.myBestmove);
+//		board.executeMove(deepov.myBestmove);
+//		System.out.println(board);
+//
+//
+//	}
 }
