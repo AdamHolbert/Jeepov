@@ -1,7 +1,10 @@
 package com.gousslegend.deepov;
 
+import java.util.List;
+
 import com.gousslegend.deepov.Game.ChessModes;
 import com.gousslegend.deepov.board.Board;
+import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Player;
 
 public interface UserInterface {
@@ -32,5 +35,9 @@ public interface UserInterface {
 	 * @param player This is the current players turn
 	 */
 	void setTurn(Player player);
+	
+	String sendMessage(String message);
+
+	Move getMove(List<Piece> pieces);
 	
 }
