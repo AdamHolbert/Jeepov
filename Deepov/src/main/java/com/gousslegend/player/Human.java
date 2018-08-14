@@ -5,13 +5,17 @@ import java.util.Scanner;
 
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.Position;
+import com.gousslegend.deepov.UserInterface;
 import com.gousslegend.deepov.board.Board;
+import com.gousslegend.deepov.pieces.Piece;
 
 public class Human extends Player
 {
-	public Human(String name, Board board)
+	UserInterface ui;
+	public Human(String name, Board board, UserInterface ui)
 	{
 		super(name, board);
+		this.ui = ui;
 	}
 
 	@Override
@@ -27,7 +31,7 @@ public class Human extends Player
 
 		while(true)
 		{
-			move = getMoveFromStdIn();
+			move = ui.getMove(myBoard.getPieces(myBoard.getColorToPlay()));
 			
 			for(Move legalmove : moves)
 			{
@@ -37,32 +41,9 @@ public class Human extends Player
 				}
 			}
 			
-				System.out.println("This move is not legal. Enter a new move");
-				System.out.println("");
-				System.out.println(myBoard);
+			ui.sendMessage("This move is not legal. Enter a new move");
 		}
 
-	}
-	
-	public Move getMoveFromStdIn()
-	{
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("Origin?");
-		int ox = sc.nextInt();
-		int oy = sc.nextInt();
-
-		System.out.println("Destination?");
-		int dx = sc.nextInt();
-		int dy = sc.nextInt();
-
-		Position origin = new Position(ox, oy);
-		Position destination = new Position(dx, dy);
-
-		Move move = new Move(origin, destination);
-		System.out.println(move);
-		
-		return move;
 	}
 	
 	
