@@ -13,5 +13,7 @@ public interface UserInterface {
 	Player getNewPlayer(Color playerColor, Board myBoard);
 	
 	void setTurn(Player player);
+
+	Position getPosition();
 	
 }
