@@ -1,11 +1,10 @@
 package com.gousslegend.deepov;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
-import com.gousslegend.player.Deepov;
-import com.gousslegend.player.Human;
 import com.gousslegend.player.Player;
 
 public class Game
@@ -13,58 +12,84 @@ public class Game
 	private Board myBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
-	private UserInterface ui;
+	GameMode mode;
 
-	public enum ChessModes {
+	/**
+	 * This is a list of the current programmed game modes.
+	 * @author Adam Holbert Neumont
+	 */
+	public enum GameMode {
 			STANDARD,
 			CHESS960
 	}
 	
-	public Game(UserInterface ui)
-	{
-		setUI(ui);
-		setMyBoard(new ArrayBoard());
-		
-		ChessModes mode = null;
-		while(mode == null) {
-			mode = this.ui.getChessMode(ChessModes.values());
+	/**
+	 * Sets up a new board with the new game mode.
+	 * @param mode The game mode you would like to set the board too. Can't be null.
+	 * @author Adam Holbert Neumont
+	 */
+	public void setGameMode(GameMode mode){
+		if(mode != null) {
+			this.mode = mode;
+			setMyBoard(new ArrayBoard());
+			myBoard.setupBoard(mode);
+		} else {
+			throw new InvalidParameterException("Game mode can't be set to null.");
 		}
-		myBoard.setupBoard(mode);
-
-		setWhitePlayer(this.ui.getNewPlayer(Color.WHITE, myBoard));
-		setBlackPlayer(this.ui.getNewPlayer(Color.BLACK, myBoard));
-
-		this.ui.updateBoard(myBoard);
 	}
 	
-	public Game(UserInterface ui, ChessModes mode, Player whitePlayer, Player blackPlayer) {
-		setUI(ui);
-		setMyBoard(new ArrayBoard());
-		myBoard.setupBoard(mode);
-		setBlackPlayer(blackPlayer);
-		setWhitePlayer(whitePlayer);
+	/**
+	 * Resets the game to the last mode set up..
+	 * @author Adam Holbert Neumont
+	 */
+	public void resetGame() {
+		if(mode != null) {
+			setGameMode(mode);			
+		} else {
+			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
+		}
 	}
+	
+	/**
+	 * Will attempt to execute the move passed in.
+	 * @param move This will throw an error the move is invalid in the current state of the game,
+	 * or if a null is passed in.
+	 * @author Adam Holbert Neumont
+	 */
+	public void makeMove(Move move) {
+		List<Move> moves = myBoard.getLegalMoves().getList();
 
-	public void play()
-	{
-		while(getWinner() == null)
+		boolean validMove = false;
+		for(Move legalmove : moves)
 		{
-			Player playerToPLay = getPlayer(myBoard.getColorToPlay());
-			ui.setTurn(getPlayer(myBoard.getColorToPlay()));
-			ui.updateBoard(myBoard);
-			
-			Move move = playerToPLay.takeTurn();
-			myBoard.executeMove(move);
+			if(move.partialEquals(legalmove))
+			{
+				validMove = true;
+				break;
+			}
 		}
-
-		System.out.println("CHECKMATE");
+		
+		if(validMove) {
+			myBoard.executeMove(move);			
+		} else {
+			throw new InvalidParameterException("The move passed in was invalid.");
+		}
+		
 	}
 	
+	/**
+	 * This will return an instance of the player whose color equals the color passed in.
+	 * @return Will return null if no player has been given to that color.
+	 */
 	public Player getPlayer(Color color)
 	{
 		return color == Color.WHITE ? whitePlayer : blackPlayer;
 	}
 
+	/**
+	 * Returns the winner of the current game.
+	 * @return An instance of the winner 
+	 */
 	public Player getWinner()
 	{
 		if (myBoard.isCheckmate())
@@ -77,7 +102,8 @@ public class Game
 		}
 	}
 
-	public int divide(int depth)
+	@SuppressWarnings("unused")
+	private int divide(int depth)
 	{
 		int nMoves, i;
 		int nodes = 0;
@@ -107,7 +133,7 @@ public class Game
 		return nodes;
 	}
 
-	public int perft(int depth)
+	private int perft(int depth)
 	{
 		int nMoves, i;
 		int nodes = 0;
@@ -131,7 +157,8 @@ public class Game
 		return nodes;
 	}
 
-	public int[] perftWithDataCheck(int depth)
+	@SuppressWarnings("unused")
+	private int[] perftWithDataCheck(int depth)
 	{
 		int nMoves, i;
 		int[] data = new int[7];
@@ -176,7 +203,8 @@ public class Game
 		return data;
 	}
 
-	public int[] perftWithData(int depth)
+	@SuppressWarnings("unused")
+	private int[] perftWithData(int depth)
 	{
 		int nMoves, i;
 		int[] data = new int[5];
@@ -215,39 +243,12 @@ public class Game
 		return data;
 	}
 	
-	private void setUI(UserInterface ui) {
-		if(ui == null) {
-			throw new InvalidParameterException("The user interface passed in can't be null");
-		}
-		this.ui = ui;
-	}
-
 	private void setMyBoard(Board myBoard) {
 		if(myBoard == null) {
 			throw new InvalidParameterException("The board passed in can't be null");
 		}
 		this.myBoard = myBoard;
 		
-	}
-
-	public Player getWhitePlayer()
-	{
-		return whitePlayer;
-	}
-
-	public void setWhitePlayer(Player whitePlayer)
-	{
-		this.whitePlayer = whitePlayer;
-	}
-
-	public Player getBlackPlayer()
-	{
-		return blackPlayer;
-	}
-
-	public void setBlackPlayer(Player blackPlayer)
-	{
-		this.blackPlayer = blackPlayer;
 	}
 
 	public Board getBoard()

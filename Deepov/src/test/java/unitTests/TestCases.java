@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import com.gousslegend.deepov.Game.ChessModes;
+import com.gousslegend.deepov.Game.GameMode;
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.pieces.Bishop;
@@ -35,7 +35,7 @@ public class TestCases {
 		};
 
 		ArrayBoard myBoard = new ArrayBoard();
-		myBoard.setupBoard(ChessModes.STANDARD);
+		myBoard.setupBoard(GameMode.STANDARD);
 		
 		assertArrayEquals(expectedCharArray, getRowAsString(7, myBoard).toCharArray());
 	}
@@ -45,7 +45,7 @@ public class TestCases {
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		for(int i = 0; i < 1000000; i++) {
 			ArrayBoard myBoard = new ArrayBoard();
-			myBoard.setupBoard(ChessModes.CHESS960);
+			myBoard.setupBoard(GameMode.CHESS960);
 			map.put(getRowAsString(7, myBoard), false);
 		}
 		
@@ -57,14 +57,14 @@ public class TestCases {
 	@Test
 	public void allChess960bothSideMirrored() {
 		ArrayBoard myBoard = new ArrayBoard();
-		myBoard.setupBoard(ChessModes.CHESS960);
+		myBoard.setupBoard(GameMode.CHESS960);
 		assertEquals(getRowAsString(7, myBoard).toLowerCase(), getRowAsString(0, myBoard).toLowerCase());
 	}
 		
 	@Test
 	public void chess960KingBettenRook() {
 		ArrayBoard myBoard = new ArrayBoard();
-		myBoard.setupBoard(ChessModes.CHESS960);
+		myBoard.setupBoard(GameMode.CHESS960);
 		boolean rookBeforeKing = false;
 		boolean rookAfterKing = false;
 		boolean foundKing = false;
@@ -88,7 +88,7 @@ public class TestCases {
 	@Test
 	public void chess960BishupsOnDifferentColors() {
 		ArrayBoard myBoard = new ArrayBoard();
-		myBoard.setupBoard(ChessModes.CHESS960);
+		myBoard.setupBoard(GameMode.CHESS960);
 		boolean bishopOnOdd = false;
 		boolean bishopOnEven = false;
 		
