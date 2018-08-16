@@ -7,7 +7,7 @@ import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.UserInterface;
 import com.gousslegend.deepov.board.Board;
 import com.gousslegend.player.Player;
-import com.gousslegend.deepov.Game.ChessModes;
+import com.gousslegend.deepov.Game.GameMode;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -25,7 +25,7 @@ import javafx.util.Duration;
 
 @SuppressWarnings("restriction")
 public class App extends Application implements UserInterface {
-	ChessModes gameMode;
+	GameMode gameMode;
 	Game g;
 	Scene scene;
 	Stage stage;
@@ -75,16 +75,16 @@ public class App extends Application implements UserInterface {
 
 
 	@Override
-	public ChessModes getChessMode(ChessModes[] values) {
+	public GameMode getChessMode(GameMode[] values) {
 		setChessModeView(values);
 		gameMode = null;
 		while(gameMode == null);
-		ChessModes set = gameMode;
+		GameMode set = gameMode;
 		gameMode = null;
 		return set;
 	}
 	
-	public void setChessModeView(ChessModes[] values) {
+	public void setChessModeView(GameMode[] values) {
 		stage = new Stage();
 		stage.setTitle("Menu Screen");
 		
@@ -99,7 +99,7 @@ public class App extends Application implements UserInterface {
 		row1.setPercentHeight(100 / (values.length + 1));
 		
 		int i = 0;
-		for(ChessModes mode: values ) {
+		for(GameMode mode: values ) {
 			Button newGame = new Button();
 			newGame.setText("Start new " + mode.toString() + " game");
 			newGame.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);

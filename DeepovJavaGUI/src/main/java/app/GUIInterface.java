@@ -1,14 +1,14 @@
 package app;
 
 import com.gousslegend.deepov.Color;
-import com.gousslegend.deepov.Game.ChessModes;
+import com.gousslegend.deepov.Game.GameMode;
 import com.gousslegend.deepov.UserInterface;
 import com.gousslegend.deepov.board.Board;
 import com.gousslegend.player.Player;
 
 public class GUIInterface implements UserInterface {
 
-	public ChessModes getChessMode(ChessModes[] values) {
+	public GameMode getChessMode(GameMode[] values) {
 		
 		return null;
 	}
