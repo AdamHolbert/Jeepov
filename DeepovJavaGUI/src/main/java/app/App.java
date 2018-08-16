@@ -3,7 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.gousslegend.deepov.Game;
-import com.gousslegend.deepov.Game.ChessModes;
+import com.gousslegend.deepov.Game.GameMode;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -39,7 +39,7 @@ public class App extends Application {
 		stage.show();
 	}
 
-	private void setGameMode(ChessModes mode) {
+	private void setGameMode(GameMode mode) {
 		
 	}
 	
@@ -88,10 +88,10 @@ public class App extends Application {
 			col2.setPercentWidth(40);
 			gp.getColumnConstraints().addAll(col1, col2);
 			RowConstraints row1 = new RowConstraints();
-			row1.setPercentHeight(100 / (ChessModes.values().length + 1));
+			row1.setPercentHeight(100 / (GameMode.values().length + 1));
 			
 			int i = 0;
-			for(ChessModes mode: ChessModes.values() ) {
+			for(GameMode mode: GameMode.values() ) {
 				Button newGame = new Button();
 				newGame.setText("Start new " + mode.toString() + " game");
 				newGame.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -111,7 +111,7 @@ public class App extends Application {
 			
 			gp.getRowConstraints().add(row1);
 			
-			gp.add(exitGame, 1, ChessModes.values().length);
+			gp.add(exitGame, 1, GameMode.values().length);
 			
 			ImageView iv = new ImageView();
 			ImageView iv1 = new ImageView();
