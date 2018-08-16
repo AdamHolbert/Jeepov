@@ -44,7 +44,7 @@ public class GridPiece extends Button{
 				Button b = (Button)value.getSource();
 				GridPiece gp = (GridPiece)b;
 				gp.selected = "Selected";				
-				b.setStyle("-fx-border-color: #0000ff; -fx-background-color: "+gp.color+";");
+				b.setStyle("-fx-border-color: #00ff00; -fx-background-color: "+gp.color+";");
 			}
 		});
 		//On Hover
