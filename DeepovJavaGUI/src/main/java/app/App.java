@@ -34,6 +34,7 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage pStage) {
+		g = new Game();
 		stage = new Stage();
 		setScene(SceneName.Loading);
 		stage.show();
@@ -71,7 +72,7 @@ public class App extends Application {
 		    ft1.play();
 			
 		    gp.getChildren().addAll(iv, iv1);
-		    gp.setPadding(new Insets(10, 10, 10, 10));
+		    gp.setPadding(new Insets((WIDTH - 284) / 2, (WIDTH - 284) / 2, (WIDTH - 284) / 2, (WIDTH - 284) / 2));
 		    scene = new Scene(gp, WIDTH, HEIGHT);
 			
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
@@ -91,12 +92,13 @@ public class App extends Application {
 			row1.setPercentHeight(100 / (GameMode.values().length + 1));
 			
 			int i = 0;
-			for(GameMode mode: GameMode.values() ) {
+			for(GameMode mode: GameMode.values()) {
 				Button newGame = new Button();
 				newGame.setText("Start new " + mode.toString() + " game");
 				newGame.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				newGame.setOnAction((event) -> {
 					setGameMode(mode);
+					g.setGameMode(mode);
 				});
 				gp.getRowConstraints().add(row1);
 				gp.add(newGame, 1, i++);
