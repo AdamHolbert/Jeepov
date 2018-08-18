@@ -1,10 +1,8 @@
 package app;
 
-import com.gousslegend.deepov.Game;
-
 public class Driver {	
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		App app = new App(args);
-		
 	}
 }
