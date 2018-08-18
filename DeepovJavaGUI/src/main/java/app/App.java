@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
-import com.gousslegend.deepov.UserInterface;
 import com.gousslegend.deepov.board.Board;
 import com.gousslegend.player.Player;
 import com.gousslegend.deepov.Game.GameMode;
@@ -22,9 +21,11 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
+import pieces.ChessBoard;
+import pieces.GridPiece;
 
 @SuppressWarnings("restriction")
-public class App extends Application implements UserInterface {
+public class App extends Application {
 	GameMode gameMode;
 	Game g;
 	Scene scene;
@@ -35,46 +36,23 @@ public class App extends Application implements UserInterface {
 	public App(String[] args) {
 		Application.launch(args);
 	}
-	
-	void run(Game g) {
-		this.g = g;
-	}
 
 	@Override
-	public void start(Stage pStage) {
-		stage = new Stage();
-		stage.setTitle("Loading Screen...");
-		GridPane gp = new GridPane();
-		ImageView iv = new ImageView();
-		ImageView iv1 = new ImageView();
-		try {
-			iv.setImage(new Image(new FileInputStream("src/main/resources/wq.png")));
-			iv1.setImage(new Image(new FileInputStream("src/main/resources/bq.png")));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		FadeTransition ft = new FadeTransition(Duration.millis(3000), iv);
-	    ft.setFromValue(1.0);
-	    ft.setToValue(0);
-	    ft.setCycleCount(Integer.MAX_VALUE);
-	    ft.setAutoReverse(true);
-	    ft.play();
-	    
-	    FadeTransition ft1 = new FadeTransition(Duration.millis(3000), iv1);
-	    ft1.setFromValue(0);
-	    ft1.setToValue(1.0);
-	    ft1.setCycleCount(Integer.MAX_VALUE);
-	    ft1.setAutoReverse(true);
-	    ft1.play();
+	public void start(Stage pStage) throws Exception {
+		pStage.setTitle("GridPane Title");
+		g = new Game();
+		g.setGameMode(GameMode.STANDARD);
 		
-	    gp.getChildren().addAll(iv, iv1);
-	    scene = new Scene(gp, 400, 400);
-		stage.setScene(scene);
-		stage.show();
+		ChessBoard gridPane = new ChessBoard(g);       
+        
+        Scene scene = new Scene(gridPane, 400, 400);
+        pStage.setScene(scene);
+        pStage.show();
+	}
+	public void update(){
+		Board b = g.getBoard();
 	}
 
-
-	@Override
 	public GameMode getChessMode(GameMode[] values) {
 		setChessModeView(values);
 		gameMode = null;
@@ -153,19 +131,5 @@ public class App extends Application implements UserInterface {
 		stage.show();
 	}
 
-	@Override
-	public void updateBoard(Board myBoard) {
-		
-	}
-
-	@Override
-	public Player getNewPlayer(Color playerColor, Board myBoard) {
-		return null;
-	}
-
-	@Override
-	public void setTurn(Player player) {
-		
-	}
 
 }

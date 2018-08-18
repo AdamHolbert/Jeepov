@@ -40,7 +40,7 @@ public abstract class Board
 
 	public abstract List<Piece> getPieces(Color color);
 
-	protected abstract List<Piece> getPieces();
+	public abstract List<Piece> getPieces();
 
 	public abstract King getKing(Color color);
 
