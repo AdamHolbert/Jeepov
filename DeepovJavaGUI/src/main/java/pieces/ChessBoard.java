@@ -73,10 +73,9 @@ public class ChessBoard extends GridPane {
 					}else if(simpleName.equals("King") && color == Color.WHITE){
 						this.add(new GridPiece("wk", bgColor), x, y, 1, 1);
 					}
-					System.out.println("X: "+x+", Y: "+y+". "+g.getBoard().getPieces().get(i).getClass().getSimpleName());
 					i++;
 				}
-				//List is is 0 - 31. Flip boolean on multiples of 4
+				//List is from 0 - 31. Flip boolean on multiples of 4
 				if((i / 4) % 2 == 1) flip = true; //i == 4 || i == 12 || i == 20 || i == 28
 				else if(i % 8 == 0) flip = false; //i == 8 || i == 16 || i == 24
 			}

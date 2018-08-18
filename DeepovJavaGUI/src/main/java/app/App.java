@@ -8,8 +8,8 @@ import com.gousslegend.deepov.Game.GameMode;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.image.Image;
@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import javafx.animation.PauseTransition;
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
+import javafx.geometry.Orientation;
+import pieces.ChessBoard;
 
 @SuppressWarnings("restriction")
 public class App extends Application {
@@ -38,6 +40,22 @@ public class App extends Application {
 		stage = new Stage();
 		setScene(SceneName.Loading);
 		stage.show();
+
+
+//		pStage.setTitle("GridPane Title");
+//		g = new Game();
+//		g.setGameMode(GameMode.STANDARD);
+//		
+//		ChessBoard gridPane = new ChessBoard(g);
+//		FlowPane flowPane = new FlowPane();
+//		flowPane.getChildren().addAll();
+//        
+//		TilePane tilePane = new TilePane(Orientation.VERTICAL);
+//		tilePane.getChildren().addAll(gridPane, flowPane);
+//
+//        Scene scene = new Scene(tilePane, 600, 400);
+//        pStage.setScene(scene);
+//        pStage.show();
 	}
 
 	private void setGameMode(GameMode mode) {
