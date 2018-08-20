@@ -33,7 +33,7 @@ public class UIConsole implements UserInterface {
 	public Player getNewPlayer(Color playerColor, Board myBoard) {
 		Player p = new Human("Human" + playerColor.toString(), myBoard, this);
 		if(playerColor == Color.BLACK) {
-			p = new Deepov(myBoard);
+			p = new Human("Human" + playerColor.toString(), myBoard, this);//new Deepov(myBoard);
 		}
 		return p;
 	}
@@ -60,7 +60,7 @@ public class UIConsole implements UserInterface {
 		
 		List<Move> moves = startingPiece.getLegalMoves().getList();
 		for(int i = 0; i < moves.size(); i++) {
-			sendMessage((i + 1) + ". " + startingPiece.toString() +  " to " + moves.get(i).getDestination().toString());
+			sendMessage((i + 1) + ". " + startingPiece.toString() +  " to " + moves.get(i).getDestination().toShortString());
 		}
 		sendMessage("\n0. Select new piece.");
 		

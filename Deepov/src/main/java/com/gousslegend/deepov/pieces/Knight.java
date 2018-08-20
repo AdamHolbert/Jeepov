@@ -103,7 +103,7 @@ public class Knight extends Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " Knight " + myPosition;
+		return myColor + " Knight " + myPosition.toShortString();
 	}
 
 	@Override

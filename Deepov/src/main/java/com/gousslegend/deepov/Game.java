@@ -47,17 +47,22 @@ public class Game
 
 	public void play()
 	{
-		while(getWinner() == null)
+		boolean gameNotOver = true;
+		while(getWinner() == null && gameNotOver)
 		{
 			Player playerToPLay = getPlayer(myBoard.getColorToPlay());
 			ui.setTurn(getPlayer(myBoard.getColorToPlay()));
 			ui.updateBoard(myBoard);
 			
 			Move move = playerToPLay.takeTurn();
-			myBoard.executeMove(move);
+			if(move != null) {
+				myBoard.executeMove(move);
+			} else {
+				gameNotOver = false;
+			}
 		}
 
-		System.out.println("CHECKMATE");
+		ui.sendMessage("STALEMATE");
 	}
 	
 	public Player getPlayer(Color color)
@@ -69,7 +74,12 @@ public class Game
 	{
 		if (myBoard.isCheckmate())
 		{
+			ui.sendMessage("CHECKMATE");
 			return getPlayer(myBoard.getColorToPlay());
+		}
+		else if(!myBoard.isCheck(myBoard.getColorToPlay()) && myBoard.getLegalMoves(myBoard.getColorToPlay()).getList().size() == 0) {
+			ui.sendMessage("DRAW");
+			return getPlayer(myBoard.getColorToPlay().getOppositeColor());
 		}
 		else
 		{

@@ -298,7 +298,7 @@ public abstract class Board
 
 		for(int i = 7; i >= 0 ; i--)
 		{
-			board += i + "|  ";
+			board += (i+1) + "|  ";
 
 			for(int j = 0; j < 8 ; j++)
 			{
@@ -317,7 +317,7 @@ public abstract class Board
 		}
 
 		board +="   ________________\n";
-		board +="    0 1 2 3 4 5 6 7\n";
+		board +="    a b c d e f g h\n";
 
 		return board;
 	}
