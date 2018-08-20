@@ -4,14 +4,13 @@ import java.io.FileNotFoundException;
 
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Game.GameMode;
+import com.gousslegend.player.Human;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.TextAlignment;
@@ -64,7 +63,10 @@ public class App extends Application {
 		Scene scene = new Scene(new GridPane());
 		if(sn == SceneName.Loading) {
 			stage.setTitle("Loading Screen...");
+			
 			GridPane gp = new GridPane();
+			gp.setStyle("-fx-background-color: linear-gradient(#4578ee, #12349d);");
+			
 			ImageView iv = new ImageView();
 			ImageView iv1 = new ImageView();
 			try {
@@ -73,13 +75,7 @@ public class App extends Application {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			FadeTransition ft = new FadeTransition(Duration.millis(3000), iv);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0);
-		    ft.setCycleCount(Integer.MAX_VALUE);
-		    ft.setAutoReverse(true);
-		    ft.play();
-		    
+			
 		    FadeTransition ft1 = new FadeTransition(Duration.millis(3000), iv1);
 		    ft1.setFromValue(0);
 		    ft1.setToValue(1.0);
@@ -98,6 +94,7 @@ public class App extends Application {
 			stage.setTitle("Menu Screen");
 			
 			GridPane gp = new GridPane();
+			gp.setStyle("-fx-background-color: linear-gradient(#4578ee, #12349d);");
 			
 			ColumnConstraints col1 = new ColumnConstraints();
 			col1.setPercentWidth(60);
@@ -111,28 +108,33 @@ public class App extends Application {
 			for(GameMode mode: GameMode.values()) {
 				Button newGame = new Button();
 				newGame.setText("Start new " + mode.toString() + " game");
-				newGame.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				newGame.setPrefSize((WIDTH * .4) - 50, (HEIGHT / (GameMode.values().length + 1)) / 2);
+				newGame.setWrapText(true);
+				newGame.setTextAlignment(TextAlignment.CENTER);
 				newGame.setOnAction((event) -> {
 					g.setGameMode(mode);
 					setScene(SceneName.PlayerMenu);
 				});
 				gp.getRowConstraints().add(row1);
 				gp.add(newGame, 1, i++);
+				GridPane.setHalignment(newGame, HPos.CENTER);
 			}
 			
 			Button exitGame = new Button();
 			exitGame.setText("Exit the Application");
-			exitGame.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			exitGame.setPrefSize((WIDTH * .4) - 50, (HEIGHT / (GameMode.values().length + 1)) / 2);
+			exitGame.setWrapText(true);
+			exitGame.setTextAlignment(TextAlignment.CENTER);
 			exitGame.setOnAction((event) -> {
 				System.exit(0);
 			});
-			
 			gp.getRowConstraints().add(row1);
-			
 			gp.add(exitGame, 1, GameMode.values().length);
+			GridPane.setHalignment(exitGame, HPos.CENTER);
 			
 			ImageView iv = new ImageView();
 			ImageView iv1 = new ImageView();
+			
 			try {
 				iv.setImage(new Image(new FileInputStream("src/main/resources/wq.png")));
 				iv1.setImage(new Image(new FileInputStream("src/main/resources/bq.png")));
@@ -145,13 +147,6 @@ public class App extends Application {
 			GridPane.setRowSpan(iv1, 3);
 			GridPane.setHalignment(iv, HPos.CENTER);
 			GridPane.setHalignment(iv1, HPos.CENTER);
-			
-			FadeTransition ft = new FadeTransition(Duration.millis(3000), iv);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0);
-		    ft.setCycleCount(Integer.MAX_VALUE);
-		    ft.setAutoReverse(true);
-		    ft.play();
 		    
 		    FadeTransition ft1 = new FadeTransition(Duration.millis(3000), iv1);
 		    ft1.setFromValue(0);
@@ -165,6 +160,7 @@ public class App extends Application {
 			stage.setTitle("Player Select");
 			
 			GridPane gp = new GridPane();
+			gp.setStyle("-fx-background-color: linear-gradient(#4578ee, #12349d);");
 			
 			ColumnConstraints col = new ColumnConstraints();
 			col.setPercentWidth(50);
@@ -182,15 +178,13 @@ public class App extends Application {
 			pvp.textProperty().set("2 Players");
 			pvp.setStyle("-fx-font-size: 30;");
 			pvp.setOnAction((event) -> {
-				//set to 2 player
-				//go on to game
+				setScene(SceneName.TwoPlayer);
 			});
 			Button pvc = new Button();
 			pvc.textProperty().set("1 Player");
 			pvc.setStyle("-fx-font-size: 30;");
 			pvc.setOnAction((event) -> {
-				//set to one player
-				//go on to game
+				setScene(SceneName.OnePlayer);
 			});
 			
 			gp.add(label, 0, 0);
@@ -200,6 +194,122 @@ public class App extends Application {
 			GridPane.setHalignment(label, HPos.CENTER);
 			GridPane.setHalignment(pvp, HPos.CENTER);
 			GridPane.setHalignment(pvc, HPos.CENTER);
+			
+			scene = new Scene(gp, WIDTH, HEIGHT);
+		} else if(sn == SceneName.OnePlayer) {
+			stage.setTitle("Player Setup");
+			
+			GridPane gp = new GridPane();
+			gp.setStyle("-fx-background-color: linear-gradient(#4578ee, #12349d);");
+			
+			ColumnConstraints col = new ColumnConstraints();
+			col.setPercentWidth(50);
+			RowConstraints row1 = new RowConstraints();
+			row1.setPercentHeight(45);
+			RowConstraints row2 = new RowConstraints();
+			row2.setPercentHeight(5);
+			RowConstraints row3 = new RowConstraints();
+			row3.setPercentHeight(50);
+			gp.getColumnConstraints().addAll(col, col);
+			gp.getRowConstraints().addAll(row1, row2, row3);
+			
+			Label label = new Label();
+			label.textProperty().set("What do you want your name to be?");
+			label.setStyle("-fx-font-size: 40;");
+			label.setWrapText(true);
+			label.setTextAlignment(TextAlignment.CENTER);
+			
+			TextField tf = new TextField();
+			tf.setMaxWidth(WIDTH - 300);
+			tf.setPromptText("Fill this out before choosing color!");
+			tf.setFocusTraversable(false);
+			
+			Button b = new Button();
+			b.textProperty().set("White");
+			b.setStyle("-fx-font-size: 30;");
+			b.setOnAction((event) -> {
+				g.setWhitePlayer(new Human(tf.getText()));
+				g.setBlackPlayer(g.getNewComputerPlayer());
+				//start game
+			});
+			Button w = new Button();
+			w.textProperty().set("Black");
+			w.setStyle("-fx-font-size: 30;");
+			w.setOnAction((event) -> {
+				g.setBlackPlayer(new Human(tf.getText()));
+				g.setWhitePlayer(g.getNewComputerPlayer());
+				//start game
+			});
+			
+			gp.add(label, 0, 0);
+			gp.add(tf, 0, 1);
+			gp.add(b, 0, 2);
+			gp.add(w, 1, 2);
+			GridPane.setColumnSpan(label, 2);
+			GridPane.setColumnSpan(tf, 2);
+			GridPane.setHalignment(label, HPos.CENTER);
+			GridPane.setHalignment(tf, HPos.CENTER);
+			GridPane.setHalignment(b, HPos.CENTER);
+			GridPane.setHalignment(w, HPos.CENTER);
+			
+			scene = new Scene(gp, WIDTH, HEIGHT);
+		} else if(sn == SceneName.TwoPlayer) {
+			stage.setTitle("Player Setup");
+			
+			GridPane gp = new GridPane();
+			gp.setStyle("-fx-background-color: linear-gradient(#4578ee, #12349d);");
+			
+			ColumnConstraints col = new ColumnConstraints();
+			col.setPercentWidth(50);
+			RowConstraints row1 = new RowConstraints();
+			row1.setPercentHeight(45);
+			RowConstraints row2 = new RowConstraints();
+			row2.setPercentHeight(5);
+			RowConstraints row3 = new RowConstraints();
+			row3.setPercentHeight(50);
+			gp.getColumnConstraints().addAll(col, col);
+			gp.getRowConstraints().addAll(row1, row2, row3);
+			
+			Label label = new Label();
+			label.textProperty().set("White name?");
+			label.setStyle("-fx-font-size: 40;");
+			label.setTextAlignment(TextAlignment.CENTER);
+			
+			Label label1 = new Label();
+			label1.textProperty().set("Black name?");
+			label1.setStyle("-fx-font-size: 40;");
+			label1.setTextAlignment(TextAlignment.CENTER);
+			
+			TextField tf = new TextField();
+			tf.setMaxWidth(WIDTH - 300);
+			tf.setPromptText("Fill this out before clicking done!");
+			tf.setFocusTraversable(false);
+			
+			TextField tf1 = new TextField();
+			tf1.setMaxWidth(WIDTH - 300);
+			tf1.setPromptText("Fill this out before clicking done!");
+			tf1.setFocusTraversable(false);
+			
+			Button b = new Button();
+			b.textProperty().set("Done");
+			b.setStyle("-fx-font-size: 30;");
+			b.setOnAction((event) -> {
+				g.setBlackPlayer(new Human(tf1.getText()));
+				g.setWhitePlayer(new Human(tf.getText()));
+				//start game
+			});
+			
+			gp.add(label, 0, 0);
+			gp.add(label1, 1, 0);
+			gp.add(tf, 0, 1);
+			gp.add(tf1, 1, 1);
+			gp.add(b, 0, 2);
+			GridPane.setColumnSpan(b, 2);
+			GridPane.setHalignment(label, HPos.CENTER);
+			GridPane.setHalignment(label1, HPos.CENTER);
+			GridPane.setHalignment(tf, HPos.CENTER);
+			GridPane.setHalignment(tf1, HPos.CENTER);
+			GridPane.setHalignment(b, HPos.CENTER);
 			
 			scene = new Scene(gp, WIDTH, HEIGHT);
 		}

@@ -3,5 +3,7 @@ package app;
 public enum SceneName {
 	Loading,
 	MainMenu,
-	PlayerMenu
+	PlayerMenu,
+	OnePlayer,
+	TwoPlayer
 }
