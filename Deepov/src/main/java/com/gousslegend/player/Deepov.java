@@ -25,11 +25,12 @@ public class Deepov extends Player
 	private final int KNIGHT_VALUE = 3;
 	private final int BISHOP_VALUE = 3;
 	private final int PAWN_VALUE = 1;
+	private Board myBoard;
 
 	public Deepov(Board board)
 	{
-		super(board);
-		setName("Deepov");
+		super("Deepov");
+		this.myBoard = board;
 	}
 
 	public Move takeTurn()
