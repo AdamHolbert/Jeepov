@@ -254,4 +254,20 @@ public class Game
 	public List<Piece> getBoardPieces() {
 		return myBoard.getPieces();
 	}
+	
+	public void setWhitePlayer(Player player) {
+		if(player != null) {
+			whitePlayer = player;
+		} else {
+			throw new InvalidParameterException("The white player can't be null");
+		}
+	}
+	
+	public void setBlackPlayer(Player player) {
+		if(player != null) {
+			blackPlayer = player;
+		} else {
+			throw new InvalidParameterException("The black player can't be null");
+		}
+	}
 }
