@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
+import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Player;
 
 public class Game
@@ -12,7 +13,7 @@ public class Game
 	private Board myBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
-	GameMode mode;
+	private GameMode mode;
 
 	/**
 	 * This is a list of the current programmed game modes.
@@ -248,17 +249,9 @@ public class Game
 			throw new InvalidParameterException("The board passed in can't be null");
 		}
 		this.myBoard = myBoard;
-		
 	}
-
-	public Board getBoard()
-	{
-		return myBoard;
+	
+	public List<Piece> getBoardPieces() {
+		return myBoard.getPieces();
 	}
-
-	public void setBoard(Board board)
-	{
-		myBoard = board;
-	}
-
 }
