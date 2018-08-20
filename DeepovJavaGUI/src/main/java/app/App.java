@@ -14,12 +14,14 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.animation.PauseTransition;
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
-import javafx.geometry.Orientation;
 import pieces.ChessBoard;
+import javafx.geometry.Orientation;
+import javafx.geometry.HPos;
 
 @SuppressWarnings("restriction")
 public class App extends Application {
@@ -36,30 +38,26 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage pStage) throws Exception {
-//		g = new Game();
-//		stage = new Stage();
-//		setScene(SceneName.Loading);
-//		stage.show();
-
-
-		pStage.setTitle("GridPane Title");
 		g = new Game();
-		g.setGameMode(GameMode.STANDARD);
-		
-		ChessBoard gridPane = new ChessBoard(g);
-		FlowPane flowPane = new FlowPane();
-		flowPane.getChildren().addAll();
-        
-		TilePane tilePane = new TilePane(Orientation.VERTICAL);
-		tilePane.getChildren().addAll(gridPane, flowPane);
+		stage = new Stage();
+		setScene(SceneName.Loading);
+		stage.show();
 
-        Scene scene = new Scene(tilePane, 600, 400);
-        pStage.setScene(scene);
-        pStage.show();
-	}
 
-	private void setGameMode(GameMode mode) {
-		
+//		pStage.setTitle("GridPane Title");
+//		g = new Game();
+//		g.setGameMode(GameMode.STANDARD);
+//		
+//		ChessBoard gridPane = new ChessBoard(g);
+//		FlowPane flowPane = new FlowPane();
+//		flowPane.getChildren().addAll();
+//        
+//		TilePane tilePane = new TilePane(Orientation.VERTICAL);
+//		tilePane.getChildren().addAll(gridPane, flowPane);
+//
+//        Scene scene = new Scene(tilePane, 600, 400);
+//        pStage.setScene(scene);
+//        pStage.show();
 	}
 	
 	public void setScene(SceneName sn) {
@@ -115,8 +113,8 @@ public class App extends Application {
 				newGame.setText("Start new " + mode.toString() + " game");
 				newGame.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				newGame.setOnAction((event) -> {
-					setGameMode(mode);
 					g.setGameMode(mode);
+					setScene(SceneName.PlayerMenu);
 				});
 				gp.getRowConstraints().add(row1);
 				gp.add(newGame, 1, i++);
@@ -145,6 +143,8 @@ public class App extends Application {
 			gp.add(iv1, 0, 0);
 			GridPane.setRowSpan(iv, 3);
 			GridPane.setRowSpan(iv1, 3);
+			GridPane.setHalignment(iv, HPos.CENTER);
+			GridPane.setHalignment(iv1, HPos.CENTER);
 			
 			FadeTransition ft = new FadeTransition(Duration.millis(3000), iv);
 		    ft.setFromValue(1.0);
@@ -161,6 +161,47 @@ public class App extends Application {
 		    ft1.play();
 			
 		    scene = new Scene(gp, WIDTH, HEIGHT);
+		} else if(sn == SceneName.PlayerMenu) {
+			stage.setTitle("Player Select");
+			
+			GridPane gp = new GridPane();
+			
+			ColumnConstraints col = new ColumnConstraints();
+			col.setPercentWidth(50);
+			RowConstraints row = new RowConstraints();
+			row.setPercentHeight(50);
+			gp.getColumnConstraints().addAll(col, col);
+			gp.getRowConstraints().addAll(row, row);
+			
+			Label label = new Label();
+			label.textProperty().set("How many players would you like to play?");
+			label.setStyle("-fx-font-size: 40;");
+			label.setWrapText(true);
+			label.setTextAlignment(TextAlignment.CENTER);
+			Button pvp = new Button();
+			pvp.textProperty().set("2 Players");
+			pvp.setStyle("-fx-font-size: 30;");
+			pvp.setOnAction((event) -> {
+				//set to 2 player
+				//go on to game
+			});
+			Button pvc = new Button();
+			pvc.textProperty().set("1 Player");
+			pvc.setStyle("-fx-font-size: 30;");
+			pvc.setOnAction((event) -> {
+				//set to one player
+				//go on to game
+			});
+			
+			gp.add(label, 0, 0);
+			gp.add(pvc, 0, 1);
+			gp.add(pvp, 1, 1);
+			GridPane.setColumnSpan(label, 2);
+			GridPane.setHalignment(label, HPos.CENTER);
+			GridPane.setHalignment(pvp, HPos.CENTER);
+			GridPane.setHalignment(pvc, HPos.CENTER);
+			
+			scene = new Scene(gp, WIDTH, HEIGHT);
 		}
 		stage.setScene(scene);
 	}

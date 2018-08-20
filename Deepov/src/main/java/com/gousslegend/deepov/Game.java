@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
+import com.gousslegend.deepov.pieces.Piece;
+import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Player;
 
 public class Game
@@ -12,7 +14,7 @@ public class Game
 	private Board myBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
-	GameMode mode;
+	private GameMode mode;
 
 	/**
 	 * This is a list of the current programmed game modes.
@@ -100,6 +102,10 @@ public class Game
 		{
 			return null;
 		}
+	}
+	
+	public Player getNewComputerPlayer() {
+		return new Deepov(myBoard);
 	}
 
 	@SuppressWarnings("unused")
@@ -248,17 +254,39 @@ public class Game
 			throw new InvalidParameterException("The board passed in can't be null");
 		}
 		this.myBoard = myBoard;
+	}
+	
+	public List<Piece> getBoardPieces() {
+		return myBoard.getPieces();
+	}
+	
+	public void setWhitePlayer(Player player) {
+		if(player != null) {
+			whitePlayer = player;
+		} else {
+			throw new InvalidParameterException("The white player can't be null");
+		}
+	}
+	
+	public void setBlackPlayer(Player player) {
+		if(player != null) {
+			blackPlayer = player;
+		} else {
+			throw new InvalidParameterException("The black player can't be null");
+		}
+	}
+	
+	public List<Piece> getSelectable() {
+		List<Piece> returnList = myBoard.getPieces();
+		Color currentColor = myBoard.getColorToPlay();
+		
+		for(Piece p : myBoard.getPieces()) {
+			if(!p.getColor().equals(currentColor) || p.getLegalMoves().size() == 0) {
+				returnList.remove(p);
+			}
+		}
+		return returnList;
 		
 	}
-
-	public Board getBoard()
-	{
-		return myBoard;
-	}
-
-	public void setBoard(Board board)
-	{
-		myBoard = board;
-	}
-
+	
 }
