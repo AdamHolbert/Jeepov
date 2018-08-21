@@ -73,7 +73,7 @@ public class ListBoard extends Board
 	}
 
 	@Override
-	protected List<Piece> getPieces()
+	public List<Piece> getPieces()
 	{
 		return myPieces;
 	}

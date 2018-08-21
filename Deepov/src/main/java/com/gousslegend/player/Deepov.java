@@ -1,15 +1,12 @@
 package com.gousslegend.player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.Position;
-import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
 import com.gousslegend.deepov.pieces.Bishop;
 import com.gousslegend.deepov.pieces.King;
@@ -22,7 +19,6 @@ import com.gousslegend.deepov.pieces.Rook;
 public class Deepov extends Player
 {
 	private Move myBestmove;
-
 	private final int KING_VALUE = 100;
 	private final int QUEEN_VALUE = 9;
 	private final int ROOK_VALUE = 5;
@@ -36,7 +32,6 @@ public class Deepov extends Player
 		setName("Deepov");
 	}
 
-	@Override
 	public Move takeTurn()
 	{
 		negaMaxRoot(3);

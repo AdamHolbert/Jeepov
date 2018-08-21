@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.gousslegend.deepov.Color;
-import com.gousslegend.deepov.Game.ChessModes;
+import com.gousslegend.deepov.Game.GameMode;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.Position;
@@ -40,7 +40,7 @@ public abstract class Board
 
 	public abstract List<Piece> getPieces(Color color);
 
-	protected abstract List<Piece> getPieces();
+	public abstract List<Piece> getPieces();
 
 	public abstract King getKing(Color color);
 
@@ -192,13 +192,13 @@ public abstract class Board
 
 	}
 	
-	public void setupBoard(ChessModes mode)
+	public void setupBoard(GameMode mode)
 	{
 		ChessPieceType[] backRowOrder = 
 			{ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.BISHOP, ChessPieceType.QUEEN, 
 					ChessPieceType.KING, ChessPieceType.BISHOP, ChessPieceType.KNIGHT, ChessPieceType.ROOK };
 		
-		if(mode == ChessModes.CHESS960) {
+		if(mode == GameMode.CHESS960) {
 			do {
 				shuffleArray(backRowOrder);
 			} while(!validChess960Placement(backRowOrder));

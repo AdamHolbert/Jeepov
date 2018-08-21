@@ -116,7 +116,7 @@ public class ArrayBoard extends Board
 		return pieces;
 	}
 
-	protected List<Piece> getPieces()
+	public List<Piece> getPieces()
 	{
 		List<Piece> pieces = new ArrayList<>();
 

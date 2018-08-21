@@ -1,6 +1,5 @@
 package com.gousslegend.player;
 
-import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.board.Board;
 
 public abstract class Player
@@ -19,8 +18,6 @@ public abstract class Player
 		myBoard = board;
 	}
 
-	public abstract Move takeTurn();
-	
 	public String getName()
 	{
 		return myName;
