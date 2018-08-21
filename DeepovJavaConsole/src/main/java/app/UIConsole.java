@@ -30,9 +30,9 @@ public class UIConsole  {
 	}
 
 	public Player getNewPlayer(Color playerColor, Board myBoard) {
-		Player p = new Human("Human" + playerColor.toString(), myBoard);
+		Player p = new Human("Human" + playerColor.toString());
 		if(playerColor == Color.BLACK) {
-			p = new Human("Human" + playerColor.toString(), myBoard);//new Deepov(myBoard);
+			p = new Human("Human" + playerColor.toString());//new Deepov(myBoard);
 		}
 		return p;
 	}

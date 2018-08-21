@@ -6,6 +6,7 @@ import java.util.List;
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
 import com.gousslegend.deepov.pieces.Piece;
+import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Player;
 
 public class Game
@@ -25,7 +26,7 @@ public class Game
 	}
 	
 	/**
-	 * Sets up a new board with the new game mode.
+	 * Sets up a new board with the new game mode. Sets both white and black players to null.
 	 * @param mode The game mode you would like to set the board too. Can't be null.
 	 * @author Adam Holbert Neumont
 	 */
@@ -34,6 +35,8 @@ public class Game
 			this.mode = mode;
 			setMyBoard(new ArrayBoard());
 			myBoard.setupBoard(mode);
+			whitePlayer = null;
+			blackPlayer = null;
 		} else {
 			throw new InvalidParameterException("Game mode can't be set to null.");
 		}
@@ -126,6 +129,10 @@ public class Game
 		{
 			return null;
 		}
+	}
+	
+	public Player getNewComputerPlayer() {
+		return new Deepov(myBoard);
 	}
 
 	@SuppressWarnings("unused")
@@ -295,4 +302,18 @@ public class Game
 			throw new InvalidParameterException("The black player can't be null");
 		}
 	}
+	
+	public List<Piece> getSelectable() {
+		List<Piece> returnList = myBoard.getPieces();
+		Color currentColor = myBoard.getColorToPlay();
+		
+		for(Piece p : myBoard.getPieces()) {
+			if(!p.getColor().equals(currentColor) || p.getLegalMoves().size() == 0) {
+				returnList.remove(p);
+			}
+		}
+		return returnList;
+		
+	}
+	
 }
