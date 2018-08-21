@@ -1,13 +1,11 @@
 package com.gousslegend.player;
 
-import com.gousslegend.deepov.board.Board;
-
 public class Human extends Player
 {
 
-	public Human(String name, Board board)
+	public Human(String name)
 	{
-		super(name, board);
+		super(name);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class Game
 	}
 	
 	/**
-	 * Sets up a new board with the new game mode.
+	 * Sets up a new board with the new game mode. Sets both white and black players to null.
 	 * @param mode The game mode you would like to set the board too. Can't be null.
 	 * @author Adam Holbert Neumont
 	 */
@@ -35,6 +35,8 @@ public class Game
 			this.mode = mode;
 			setMyBoard(new ArrayBoard());
 			myBoard.setupBoard(mode);
+			whitePlayer = null;
+			blackPlayer = null;
 		} else {
 			throw new InvalidParameterException("Game mode can't be set to null.");
 		}

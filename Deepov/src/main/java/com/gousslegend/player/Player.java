@@ -1,23 +1,14 @@
 package com.gousslegend.player;
 
-import com.gousslegend.deepov.board.Board;
-
 public abstract class Player
 {
 	protected String myName = "Human";
-	protected Board myBoard;
 	
-	public Player(String name, Board board)
+	public Player(String name)
 	{
 		myName = name;
-		myBoard = board;
 	}
-
-	public Player(Board board)
-	{
-		myBoard = board;
-	}
-
+	
 	public String getName()
 	{
 		return myName;
