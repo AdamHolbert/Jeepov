@@ -37,26 +37,26 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage pStage) throws Exception {
-		g = new Game();
-		stage = new Stage();
-		setScene(SceneName.Loading);
-		stage.show();
-
-
-//		pStage.setTitle("GridPane Title");
 //		g = new Game();
-//		g.setGameMode(GameMode.STANDARD);
-//		
-//		ChessBoard gridPane = new ChessBoard(g);
-//		FlowPane flowPane = new FlowPane();
-//		flowPane.getChildren().addAll();
-//        
-//		TilePane tilePane = new TilePane(Orientation.VERTICAL);
-//		tilePane.getChildren().addAll(gridPane, flowPane);
-//
-//        Scene scene = new Scene(tilePane, 600, 400);
-//        pStage.setScene(scene);
-//        pStage.show();
+//		stage = new Stage();
+//		setScene(SceneName.Loading);
+//		stage.show();
+
+
+		pStage.setTitle("GridPane Title");
+		g = new Game();
+		g.setGameMode(GameMode.STANDARD);
+		
+		ChessBoard gridPane = new ChessBoard(g);
+		FlowPane flowPane = new FlowPane();
+		flowPane.getChildren().addAll();
+        
+		TilePane tilePane = new TilePane(Orientation.VERTICAL);
+		tilePane.getChildren().addAll(gridPane, flowPane);
+
+        Scene scene = new Scene(tilePane, 600, 400);
+        pStage.setScene(scene);
+        pStage.show();
 	}
 	
 	public void setScene(SceneName sn) {
