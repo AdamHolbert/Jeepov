@@ -10,6 +10,7 @@ import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
+import com.gousslegend.player.Deepov;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,7 +58,7 @@ public class ChessBoard extends GridPane {
 			int x = currentPiece.getPosition().getX();
 			int y = currentPiece.getPosition().getY();
 			GridPiece tempPiece = null;
-			Color bgColor = list[x][y].color.equals("#000") ? Color.BLACK : Color.WHITE;
+			Color bgColor = list[x][y].bgColor.equals("#000") ? Color.BLACK : Color.WHITE;
 			
 			String simpleName =  currentPiece.getClass().getSimpleName();
 			Color color = currentPiece.getColor();
@@ -159,12 +160,15 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
-		if(selectedGridPiece.getColor() != computerColor){
+		if(selectedGridPiece.pieceColor != computerColor){
+			System.out.println(selectedGridPiece.pieceColor+" "+computerColor);
 			game.makeMove(move);
+			System.out.println("Computer turn");
 			update();
 		}
-		else{
-			System.out.println("Computer turn");
+		if(computerColor == null){
+			game.makeMove(move);
+			update();
 		}
 	}
 }
