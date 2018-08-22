@@ -302,7 +302,19 @@ public class App extends Application {
 			
 			scene = new Scene(gp, WIDTH, HEIGHT);
 		} else if(sn == SceneName.ChessGame) {
+			stage.setTitle("GridPane Title");
 			
+			ChessBoard gridPane = null;
+			try { gridPane = new ChessBoard(g);
+			} catch (Exception e) { e.printStackTrace(); }
+			
+			FlowPane flowPane = new FlowPane();
+			flowPane.getChildren().addAll();
+	        
+			TilePane tilePane = new TilePane(Orientation.VERTICAL);
+			tilePane.getChildren().addAll(gridPane, flowPane);
+
+	        scene = new Scene(tilePane, 600, 400);
 		}
 		stage.setScene(scene);
 	}
