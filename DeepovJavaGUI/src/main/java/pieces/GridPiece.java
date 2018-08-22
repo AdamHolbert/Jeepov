@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.gousslegend.deepov.Color;
+import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
@@ -23,6 +24,8 @@ public class GridPiece extends Button{
 	public ChessBoard board;
 	private Piece piece;
 	public Position pos = new Position();
+	private boolean isSelected = false;
+	private Move move;
 	
 	@SuppressWarnings("restriction")
 	public GridPiece(String fileName, Color bgColor, ChessBoard board, Piece currentPiece) throws Exception{
@@ -45,23 +48,27 @@ public class GridPiece extends Button{
 		}else if(bgColor == Color.WHITE){
 			this.color = "#fff";
 		}
-		this.setStyle("-fx-background-color: "+this.color+"; -fx-border-width: 0px;");
+		this.setStyle("-fx-background-color: "+this.color+"; -fx-border-width: 0px; -fx-border-radius: 0px;");
 		//On Click
 		this.setOnAction((value) -> {
-			if(!this.getStyle().equals("-fx-background-color: #33f;") || !name.equals(""))
+			if(!this.isSelected && this.piece != null)
 				board.selectedPiece(this);
-			else {
-				try { board.makeMove(this.color, pos);
-				} catch (Exception e) { e.printStackTrace(); }
-//				this.setStyle("-fx-background-color: #f33;");
-			}
+			if(this.getMove() != null){
+				try { board.makeMove(this.getMove());
+				} catch (Exception e) { e.printStackTrace(); } }
 		});
 	}
 
 	public void highlight() {
-		this.setStyle("-fx-background-color: #33f;");
+		isSelected = true;
+		if(this.piece != null){
+			this.setStyle("-fx-background-color: "+(this.color.equals("#000") ? "#600" : "#faa")+"; -fx-opacity: 0.7;");
+		} else {
+			this.setStyle("-fx-background-color: "+(this.color.equals("#000") ? "#060" : "#afa")+"; -fx-opacity: 0.7;");
+		}
 	}
 	public void unhighlight() {
+		isSelected = false;
 		this.setStyle("-fx-background-color: "+this.color+";");
 	}
 
@@ -93,4 +100,22 @@ public class GridPiece extends Button{
 	public void setColor(String bgColor){
 		this.color = bgColor;
 	}
+
+	public void setMove(Move move) {
+		this.move = move;
+	}
+
+	public Move getMove() {
+		return move;
+	}
+
+	public void unselect() {
+		this.setStyle("-fx-background-color: " + this.color +";");
+	}
+
+	public void select() {
+		this.setStyle("-fx-background-color: "+(this.color.equals("#000") ? "#002" : "#ddf")+"; -fx-opacity: 0.7; -fx-border-color: #00f;");
+		
+	}
+	
 }

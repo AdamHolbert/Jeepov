@@ -219,7 +219,7 @@ public class App extends Application {
 			b.setOnAction((event) -> {
 				g.setWhitePlayer(new Human(tf.getText()));
 				g.setBlackPlayer(g.getNewComputerPlayer());
-				//start game
+				setScene(SceneName.ChessGame);
 			});
 			Button w = new Button();
 			w.textProperty().set("Black");
@@ -227,7 +227,7 @@ public class App extends Application {
 			w.setOnAction((event) -> {
 				g.setBlackPlayer(new Human(tf.getText()));
 				g.setWhitePlayer(g.getNewComputerPlayer());
-				//start game
+				setScene(SceneName.ChessGame);
 			});
 			
 			gp.add(label, 0, 0);
@@ -285,7 +285,7 @@ public class App extends Application {
 			b.setOnAction((event) -> {
 				g.setBlackPlayer(new Human(tf1.getText()));
 				g.setWhitePlayer(new Human(tf.getText()));
-				//start game
+				setScene(SceneName.ChessGame);
 			});
 			
 			gp.add(label, 0, 0);
@@ -301,6 +301,8 @@ public class App extends Application {
 			GridPane.setHalignment(b, HPos.CENTER);
 			
 			scene = new Scene(gp, WIDTH, HEIGHT);
+		} else if(sn == SceneName.ChessGame) {
+			
 		}
 		stage.setScene(scene);
 	}

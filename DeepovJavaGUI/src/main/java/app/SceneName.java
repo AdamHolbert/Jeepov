@@ -5,5 +5,6 @@ public enum SceneName {
 	MainMenu,
 	PlayerMenu,
 	OnePlayer,
-	TwoPlayer
+	TwoPlayer,
+	ChessGame
 }
