@@ -62,24 +62,25 @@ public class Game
 	 */
 	public void makeMove(Move move) {
 		checkValidGameConfigurationLogic();
-		List<Move> moves = myBoard.getLegalMoves().getList();
-
-		boolean validMove = false;
-		for(Move legalmove : moves)
-		{
-			if(move.partialEquals(legalmove))
+		if(!isStalemate() && !isCheckmate()) {			
+			List<Move> moves = myBoard.getLegalMoves().getList();
+	
+			boolean validMove = false;
+			for(Move legalmove : moves)
 			{
-				validMove = true;
-				break;
+				if(move.partialEquals(legalmove))
+				{
+					validMove = true;
+					break;
+				}
+			}
+			
+			if(validMove) {
+				myBoard.executeMove(move);			
+			} else {
+				throw new InvalidParameterException("The move passed in was invalid.");
 			}
 		}
-		
-		if(validMove) {
-			myBoard.executeMove(move);			
-		} else {
-			throw new InvalidParameterException("The move passed in was invalid.");
-		}
-		
 	}
 	
 	/**
@@ -98,14 +99,17 @@ public class Game
 	public Player getWinner()
 	{
 		checkValidGameConfigurationLogic();
-		if (myBoard.isCheckmate())
-		{
-			return getPlayer(myBoard.getColorToPlay());
-		}
-		else
-		{
-			return null;
-		}
+		return isCheckmate() ? getPlayer(myBoard.getColorToPlay()) : null;
+	}
+	
+	public boolean isStalemate() {
+		checkValidGameConfigurationLogic();
+		return getSelectable().size() == 0;
+	}
+	
+	public boolean isCheckmate() {
+		checkValidGameConfigurationLogic();
+		return myBoard.isCheckmate();
 	}
 	
 	public Player getNewComputerPlayer() {
@@ -309,5 +313,9 @@ public class Game
 		if(!hasValidModeConfiguration()) {
 			throw new IllegalStateException("The mode has not been set up properly.");
 		}
+	}
+	
+	public Color getCurrentTurnColor() {
+		return myBoard.getColorToPlay();
 	}
 }

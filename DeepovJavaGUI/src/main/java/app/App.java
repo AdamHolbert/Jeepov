@@ -48,6 +48,12 @@ public class App extends Application {
 		stage.show();
 	}
 	
+	public void resetVariables() {
+		g = new Game();
+		computerColor = null;
+		setScene(SceneName.MainMenu);
+	}
+	
 	public void setScene(SceneName sn) {
 		Scene scene = new Scene(new GridPane());
 		if(sn == SceneName.Loading) {
@@ -212,7 +218,7 @@ public class App extends Application {
 			
 			TextField tf = new TextField();
 			tf.setMaxWidth(WIDTH - 300);
-			tf.setPromptText("Fill this out before choosing color!");
+			tf.setText("Player 1");
 			tf.setFocusTraversable(false);
 			
 			Button b = new Button();
@@ -275,12 +281,12 @@ public class App extends Application {
 			
 			TextField tf = new TextField();
 			tf.setMaxWidth(WIDTH - 300);
-			tf.setPromptText("Fill this out before clicking done!");
+			tf.setText("Player 1");
 			tf.setFocusTraversable(false);
 			
 			TextField tf1 = new TextField();
 			tf1.setMaxWidth(WIDTH - 300);
-			tf1.setPromptText("Fill this out before clicking done!");
+			tf1.setText("Player 2");
 			tf1.setFocusTraversable(false);
 			
 			Button b = new Button();
@@ -319,6 +325,56 @@ public class App extends Application {
 			tilePane.getChildren().addAll(gridPane, flowPane);
 
 	        scene = new Scene(tilePane, 600, 400);
+		} else if(sn == SceneName.EndScreen) {
+			String endString = "";
+			if(g.isStalemate()) {
+				endString = "It's a draw.";
+			} else {
+				if((g.getPlayer(Color.BLACK) instanceof Human) && (g.getPlayer(Color.WHITE) instanceof Human)) {
+					endString = g.getWinner().getName() + " won!";
+				} else {
+					endString = g.getWinner() instanceof Human ? "You won!" : "You lost...";
+				}
+			}
+			stage.setTitle(endString);
+			
+			GridPane gp = new GridPane();
+			gp.setStyle(PANE_STYLE);
+			
+			ColumnConstraints col = new ColumnConstraints();
+			col.setPercentWidth(50);
+			RowConstraints row = new RowConstraints();
+			row.setPercentHeight(50);
+			gp.getColumnConstraints().addAll(col, col);
+			gp.getRowConstraints().addAll(row, row);
+			
+			Label label = new Label();
+			label.textProperty().set(endString);
+			label.setStyle("-fx-font-size: 40;");
+			label.setWrapText(true);
+			label.setTextAlignment(TextAlignment.CENTER);
+			Button playagain = new Button();
+			playagain.textProperty().set("Replay");
+			playagain.setStyle("-fx-font-size: 30; " + BUTTON_STYLE);
+			playagain.setOnAction((event) -> {
+				resetVariables();
+			});
+			Button end = new Button();
+			end.textProperty().set("Exit Game");
+			end.setStyle("-fx-font-size: 30; " + BUTTON_STYLE);
+			end.setOnAction((event) -> {
+				System.exit(0);
+			});
+			
+			gp.add(label, 0, 0);
+			gp.add(playagain, 0, 1);
+			gp.add(end, 1, 1);
+			GridPane.setColumnSpan(label, 2);
+			GridPane.setHalignment(label, HPos.CENTER);
+			GridPane.setHalignment(playagain, HPos.CENTER);
+			GridPane.setHalignment(end, HPos.CENTER);
+			
+			scene = new Scene(gp, WIDTH, HEIGHT);
 		}
 		stage.setScene(scene);
 	}
