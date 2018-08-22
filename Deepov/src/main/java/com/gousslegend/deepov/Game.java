@@ -314,4 +314,8 @@ public class Game
 			throw new IllegalStateException("The mode has not been set up properly.");
 		}
 	}
+	
+	public Color getCurrentTurnColor() {
+		return myBoard.getColorToPlay();
+	}
 }
