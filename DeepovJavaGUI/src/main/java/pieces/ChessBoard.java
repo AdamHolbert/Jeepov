@@ -1,28 +1,16 @@
 package pieces;
 
-import javafx.scene.control.*;
-
-import java.util.ArrayList;
-
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
-import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Player;
 
-import app.SceneName;
 import javafx.animation.PauseTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public class ChessBoard extends GridPane {
 	GridPiece[][] list = new GridPiece[8][8];
@@ -68,7 +56,7 @@ public class ChessBoard extends GridPane {
 			int x = currentPiece.getPosition().getX();
 			int y = currentPiece.getPosition().getY();
 			GridPiece tempPiece = null;
-			Color bgColor = list[x][y].color.equals("#000") ? Color.BLACK : Color.WHITE;
+			Color bgColor = list[x][y].bgColor.equals("#000") ? Color.BLACK : Color.WHITE;
 			
 			String simpleName =  currentPiece.getClass().getSimpleName();
 			Color color = currentPiece.getColor();
