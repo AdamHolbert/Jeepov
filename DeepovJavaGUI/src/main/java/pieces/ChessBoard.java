@@ -1,43 +1,37 @@
 package pieces;
 
-import javafx.scene.control.*;
-
-import java.util.ArrayList;
-
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
-import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
+import com.gousslegend.player.Player;
 
-import app.App;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.*;
-import javafx.scene.layout.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.animation.PauseTransition;
+import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 public class ChessBoard extends GridPane {
-	private GridPiece[][] list = new GridPiece[8][8];
+	GridPiece[][] list = new GridPiece[8][8];
 	private Game game = null;
 	private GridPiece selectedGridPiece = null;
 	private Color computerColor;
-	private App app = null;
 	
-	public ChessBoard(Game g, Color pcColor, App app) throws Exception{
+	public ChessBoard(Game g, Color pcColor) throws Exception{
 		this.game = g;
 		if(pcColor != null)
 			this.computerColor = pcColor;
-		this.app = app;
 		update();
 	}
 	
+	@SuppressWarnings("restriction")
 	private void update() throws Exception{
 		this.getChildren().clear();
+		if(game.isCheckmate() || game.isStalemate()) {
+//			app.setScene(SceneName.EndScreen);
+			return;
+		}
 		int i = 0;
 		boolean flip = false;
 		for(int a = 0; a < 8; a++){
@@ -105,7 +99,24 @@ public class ChessBoard extends GridPane {
 				this.add(list[a][b], a, b, 1, 1);
 			}
 		}
-		highlightSelectable();
+		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
+		if(currentPlayer instanceof Deepov) {
+			@SuppressWarnings("restriction")
+			PauseTransition delay = new PauseTransition(Duration.seconds(2));
+			delay.setOnFinished( event -> {
+				game.makeMove(((Deepov) currentPlayer).takeTurn());
+				try {
+					update();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			delay.play();
+		} else {			
+			highlightSelectable();
+			
+		}
 	}
 
 	private void highlightSelectable() {
@@ -133,10 +144,13 @@ public class ChessBoard extends GridPane {
 			}
 			highlightSelectable();
 		} else {
-			for(Piece piece : game.getSelectable()) {
-				if(piece == gridPiece.getPiece()){
-					validSelection = true;
-					selectedGridPiece = gridPiece;
+			if(!(game.getPlayer(game.getCurrentTurnColor()) instanceof Deepov)) {
+				for(Piece piece : game.getSelectable()) {
+					if(piece == gridPiece.getPiece()){
+						
+						validSelection = true;
+						selectedGridPiece = gridPiece;
+					}
 				}
 			}
 			if(validSelection){
@@ -164,15 +178,7 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
-		if(selectedGridPiece.pieceColor != computerColor){
-			System.out.println(selectedGridPiece.pieceColor+" "+computerColor);
-			game.makeMove(move);
-			System.out.println("Computer turn");
-			update();
-		}
-		if(computerColor == null){
-			game.makeMove(move);
-			update();
-		}
+		game.makeMove(move);
+		update();
 	}
 }
