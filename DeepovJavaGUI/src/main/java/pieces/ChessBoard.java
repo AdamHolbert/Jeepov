@@ -12,6 +12,7 @@ import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
 
+import app.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.*;
@@ -21,14 +22,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class ChessBoard extends GridPane {
-	GridPiece[][] list = new GridPiece[8][8];
+	private GridPiece[][] list = new GridPiece[8][8];
 	private Game game = null;
 	private GridPiece selectedGridPiece = null;
 	private Color computerColor;
-	public ChessBoard(Game g, Color pcColor) throws Exception{
+	private App app = null;
+	
+	public ChessBoard(Game g, Color pcColor, App app) throws Exception{
 		this.game = g;
 		if(pcColor != null)
 			this.computerColor = pcColor;
+		this.app = app;
 		update();
 	}
 	

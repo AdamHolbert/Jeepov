@@ -315,7 +315,7 @@ public class App extends Application {
 			stage.setTitle("GridPane Title");
 			
 			ChessBoard gridPane = null;
-			try { gridPane = new ChessBoard(g, computerColor);
+			try { gridPane = new ChessBoard(g, computerColor, this);
 			} catch (Exception e) { e.printStackTrace(); }
 			
 			FlowPane flowPane = new FlowPane();
@@ -378,4 +378,5 @@ public class App extends Application {
 		}
 		stage.setScene(scene);
 	}
+
 }
