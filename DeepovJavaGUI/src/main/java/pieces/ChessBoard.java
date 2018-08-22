@@ -21,11 +21,13 @@ import javafx.scene.input.MouseEvent;
 
 public class ChessBoard extends GridPane {
 	GridPiece[][] list = new GridPiece[8][8];
-//	ArrayList<GridPiece> list = new ArrayList<>();
 	private Game game = null;
 	private GridPiece selectedGridPiece = null;
-	public ChessBoard(Game g) throws Exception{
+	private Color computerColor;
+	public ChessBoard(Game g, Color pcColor) throws Exception{
 		this.game = g;
+		if(pcColor != null)
+			this.computerColor = pcColor;
 		update();
 	}
 	
@@ -41,7 +43,6 @@ public class ChessBoard extends GridPane {
 				else bgColor = Color.WHITE;
 				
 				GridPiece tempPiece = new GridPiece("", bgColor, this, null);
-//				this.add(tempPiece, a, b, 1, 1);
 				list[a][b] = tempPiece;
 				//The list of pieces on board
 				
@@ -158,7 +159,12 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
-		game.makeMove(move);
-		update();
+		if(selectedGridPiece.getColor() != computerColor){
+			game.makeMove(move);
+			update();
+		}
+		else{
+			System.out.println("Computer turn");
+		}
 	}
 }
