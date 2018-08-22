@@ -83,7 +83,7 @@ public class App extends Application {
 		    scene = new Scene(gp, WIDTH, HEIGHT);
 			
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
-			delay.setOnFinished( event -> setScene(SceneName.EndScreen));
+			delay.setOnFinished( event -> setScene(SceneName.MainMenu));
 			delay.play();
 		} else if(sn == SceneName.MainMenu) {
 			stage.setTitle("Menu Screen");
@@ -218,7 +218,7 @@ public class App extends Application {
 			
 			TextField tf = new TextField();
 			tf.setMaxWidth(WIDTH - 300);
-			tf.setPromptText("Fill this out before choosing color!");
+			tf.setText("Player 1");
 			tf.setFocusTraversable(false);
 			
 			Button b = new Button();
@@ -281,12 +281,12 @@ public class App extends Application {
 			
 			TextField tf = new TextField();
 			tf.setMaxWidth(WIDTH - 300);
-			tf.setPromptText("Fill this out before clicking done!");
+			tf.setText("Player 1");
 			tf.setFocusTraversable(false);
 			
 			TextField tf1 = new TextField();
 			tf1.setMaxWidth(WIDTH - 300);
-			tf1.setPromptText("Fill this out before clicking done!");
+			tf1.setText("Player 2");
 			tf1.setFocusTraversable(false);
 			
 			Button b = new Button();
