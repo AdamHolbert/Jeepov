@@ -47,8 +47,8 @@ public class Game
 	 * @author Adam Holbert Neumont
 	 */
 	public void resetGame() {
-		if(mode != null) {
-			setGameMode(mode);			
+		if(hasValidModeConfiguration()) {
+			setGameMode(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}
@@ -61,6 +61,7 @@ public class Game
 	 * @author Adam Holbert Neumont
 	 */
 	public void makeMove(Move move) {
+		checkValidGameConfigurationLogic();
 		List<Move> moves = myBoard.getLegalMoves().getList();
 
 		boolean validMove = false;
@@ -96,6 +97,7 @@ public class Game
 	 */
 	public Player getWinner()
 	{
+		checkValidGameConfigurationLogic();
 		if (myBoard.isCheckmate())
 		{
 			return getPlayer(myBoard.getColorToPlay());
@@ -279,6 +281,7 @@ public class Game
 	}
 	
 	public List<Piece> getSelectable() {
+		checkValidGameConfigurationLogic();
 		List<Piece> returnList = myBoard.getPieces();
 		Color currentColor = myBoard.getColorToPlay();
 		
@@ -291,4 +294,20 @@ public class Game
 		
 	}
 	
+	public boolean hasValidPlayerConfiguration() {
+		return (whitePlayer != null && blackPlayer != null); 
+	}
+	
+	public boolean hasValidModeConfiguration() {
+		return mode != null && myBoard != null;
+	}
+	
+	public void checkValidGameConfigurationLogic(){
+		if(!hasValidPlayerConfiguration()) {
+			throw new IllegalStateException("The players have not been set up properly.");
+		}
+		if(!hasValidModeConfiguration()) {
+			throw new IllegalStateException("The mode has not been set up properly.");
+		}
+	}
 }
