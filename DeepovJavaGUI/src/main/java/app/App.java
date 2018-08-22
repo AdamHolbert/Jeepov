@@ -50,10 +50,8 @@ public class App extends Application {
 	
 	public void resetVariables() {
 		g = new Game();
-		stage = new Stage();
 		computerColor = null;
 		setScene(SceneName.MainMenu);
-		stage.show();
 	}
 	
 	public void setScene(SceneName sn) {
@@ -85,7 +83,7 @@ public class App extends Application {
 		    scene = new Scene(gp, WIDTH, HEIGHT);
 			
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
-			delay.setOnFinished( event -> setScene(SceneName.MainMenu));
+			delay.setOnFinished( event -> setScene(SceneName.EndScreen));
 			delay.play();
 		} else if(sn == SceneName.MainMenu) {
 			stage.setTitle("Menu Screen");
@@ -327,13 +325,16 @@ public class App extends Application {
 			tilePane.getChildren().addAll(gridPane, flowPane);
 
 	        scene = new Scene(tilePane, 600, 400);
-			 
 		} else if(sn == SceneName.EndScreen) {
 			String endString = "";
-			if((g.getPlayer(Color.BLACK) instanceof Human) && (g.getPlayer(Color.WHITE) instanceof Human)) {
-				endString = g.getWinner().getName() + " won!";
+			if(g.isStalemate()) {
+				endString = "It's a draw.";
 			} else {
-				endString = g.getWinner() instanceof Human ? "You won!" : "You lost...";
+				if((g.getPlayer(Color.BLACK) instanceof Human) && (g.getPlayer(Color.WHITE) instanceof Human)) {
+					endString = g.getWinner().getName() + " won!";
+				} else {
+					endString = g.getWinner() instanceof Human ? "You won!" : "You lost...";
+				}
 			}
 			stage.setTitle(endString);
 			
