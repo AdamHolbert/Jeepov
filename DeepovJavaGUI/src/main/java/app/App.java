@@ -2,6 +2,7 @@ package app;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Game.GameMode;
 import com.gousslegend.player.Human;
@@ -26,6 +27,7 @@ import javafx.geometry.HPos;
 public class App extends Application {
 	Game g;
 	Stage stage;
+	Color computerColor;
 	final double WIDTH = 500;
 	final double HEIGHT = 500;
 	final String PANE_STYLE = "-fx-background-color: linear-gradient(#4578ee, #12349d);";
@@ -219,6 +221,7 @@ public class App extends Application {
 			b.setOnAction((event) -> {
 				g.setWhitePlayer(new Human(tf.getText()));
 				g.setBlackPlayer(g.getNewComputerPlayer());
+				computerColor = Color.BLACK;
 				setScene(SceneName.ChessGame);
 			});
 			Button w = new Button();
@@ -227,6 +230,7 @@ public class App extends Application {
 			w.setOnAction((event) -> {
 				g.setBlackPlayer(new Human(tf.getText()));
 				g.setWhitePlayer(g.getNewComputerPlayer());
+				computerColor = Color.WHITE;
 				setScene(SceneName.ChessGame);
 			});
 			
@@ -302,7 +306,7 @@ public class App extends Application {
 			
 			scene = new Scene(gp, WIDTH, HEIGHT);
 		} else if(sn == SceneName.ChessGame) {
-			
+			 
 		}
 		stage.setScene(scene);
 	}
