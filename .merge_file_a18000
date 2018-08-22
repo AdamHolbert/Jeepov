@@ -2,7 +2,6 @@ package app;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Game.GameMode;
 import com.gousslegend.player.Human;
@@ -27,7 +26,6 @@ import javafx.geometry.HPos;
 public class App extends Application {
 	Game g;
 	Stage stage;
-	Color computerColor;
 	final double WIDTH = 500;
 	final double HEIGHT = 500;
 	final String PANE_STYLE = "-fx-background-color: linear-gradient(#4578ee, #12349d);";
@@ -45,14 +43,6 @@ public class App extends Application {
 		g = new Game();
 		stage = new Stage();
 		setScene(SceneName.Loading);
-		stage.show();
-	}
-	
-	public void resetVariables() {
-		g = new Game();
-		stage = new Stage();
-		computerColor = null;
-		setScene(SceneName.MainMenu);
 		stage.show();
 	}
 	
@@ -229,7 +219,6 @@ public class App extends Application {
 			b.setOnAction((event) -> {
 				g.setWhitePlayer(new Human(tf.getText()));
 				g.setBlackPlayer(g.getNewComputerPlayer());
-				computerColor = Color.BLACK;
 				setScene(SceneName.ChessGame);
 			});
 			Button w = new Button();
@@ -238,7 +227,6 @@ public class App extends Application {
 			w.setOnAction((event) -> {
 				g.setBlackPlayer(new Human(tf.getText()));
 				g.setWhitePlayer(g.getNewComputerPlayer());
-				computerColor = Color.WHITE;
 				setScene(SceneName.ChessGame);
 			});
 			
@@ -314,66 +302,7 @@ public class App extends Application {
 			
 			scene = new Scene(gp, WIDTH, HEIGHT);
 		} else if(sn == SceneName.ChessGame) {
-			stage.setTitle("GridPane Title");
 			
-			ChessBoard gridPane = null;
-			try { gridPane = new ChessBoard(g, computerColor);
-			} catch (Exception e) { e.printStackTrace(); }
-			
-			FlowPane flowPane = new FlowPane();
-			flowPane.getChildren().addAll();
-	        
-			TilePane tilePane = new TilePane(Orientation.VERTICAL);
-			tilePane.getChildren().addAll(gridPane, flowPane);
-
-	        scene = new Scene(tilePane, 600, 400);
-			 
-		} else if(sn == SceneName.EndScreen) {
-			String endString = "";
-			if((g.getPlayer(Color.BLACK) instanceof Human) && (g.getPlayer(Color.WHITE) instanceof Human)) {
-				endString = g.getWinner().getName() + " won!";
-			} else {
-				endString = g.getWinner() instanceof Human ? "You won!" : "You lost...";
-			}
-			stage.setTitle(endString);
-			
-			GridPane gp = new GridPane();
-			gp.setStyle(PANE_STYLE);
-			
-			ColumnConstraints col = new ColumnConstraints();
-			col.setPercentWidth(50);
-			RowConstraints row = new RowConstraints();
-			row.setPercentHeight(50);
-			gp.getColumnConstraints().addAll(col, col);
-			gp.getRowConstraints().addAll(row, row);
-			
-			Label label = new Label();
-			label.textProperty().set(endString);
-			label.setStyle("-fx-font-size: 40;");
-			label.setWrapText(true);
-			label.setTextAlignment(TextAlignment.CENTER);
-			Button playagain = new Button();
-			playagain.textProperty().set("Replay");
-			playagain.setStyle("-fx-font-size: 30; " + BUTTON_STYLE);
-			playagain.setOnAction((event) -> {
-				resetVariables();
-			});
-			Button end = new Button();
-			end.textProperty().set("Exit Game");
-			end.setStyle("-fx-font-size: 30; " + BUTTON_STYLE);
-			end.setOnAction((event) -> {
-				System.exit(0);
-			});
-			
-			gp.add(label, 0, 0);
-			gp.add(playagain, 0, 1);
-			gp.add(end, 1, 1);
-			GridPane.setColumnSpan(label, 2);
-			GridPane.setHalignment(label, HPos.CENTER);
-			GridPane.setHalignment(playagain, HPos.CENTER);
-			GridPane.setHalignment(end, HPos.CENTER);
-			
-			scene = new Scene(gp, WIDTH, HEIGHT);
 		}
 		stage.setScene(scene);
 	}
