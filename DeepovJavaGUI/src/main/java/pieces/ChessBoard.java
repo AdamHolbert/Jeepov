@@ -8,6 +8,7 @@ import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Player;
 
+import app.App;
 import javafx.animation.PauseTransition;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
@@ -17,11 +18,11 @@ public class ChessBoard extends GridPane {
 	private Game game = null;
 	private GridPiece selectedGridPiece = null;
 	private Color computerColor;
+	private App app = null;
 	
-	public ChessBoard(Game g, Color pcColor) throws Exception{
+	public ChessBoard(Game g, Color pcColor, App app) throws Exception{
 		this.game = g;
-		if(pcColor != null)
-			this.computerColor = pcColor;
+		this.app = app;
 		update();
 	}
 	
