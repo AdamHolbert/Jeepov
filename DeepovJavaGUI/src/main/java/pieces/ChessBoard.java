@@ -37,8 +37,9 @@ public class ChessBoard extends GridPane {
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
-//			game.resetGame();
-//			try { update(); } catch (Exception e) { e.printStackTrace(); }
+			moves = "";
+			game.resetGame();
+			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
 	}
 	
@@ -113,14 +114,15 @@ public class ChessBoard extends GridPane {
 				this.add(list[7 - a][7 - b], 7 - a, 7 - b, 1, 1);
 			}
 		}
-		//Turn Handler
 		if(currentPlayer instanceof Deepov) {
 			@SuppressWarnings("restriction")
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
-				game.makeMove(((Deepov) currentPlayer).takeTurn());
+				Move move = ((Deepov) currentPlayer).takeTurn();
+				game.makeMove(move);
 
-//				moveLabel.textProperty().set(moves);
+				moves += playerName+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+				moveLabel.textProperty().set(moves);
 				try { update();
 				} catch (Exception e) { e.printStackTrace(); }
 			});
@@ -185,6 +187,7 @@ public class ChessBoard extends GridPane {
 				}
 			}
 		}
+<<<<<<< HEAD
 	}
 	
 	public void makeMove(Move move) throws Exception{
@@ -195,3 +198,15 @@ public class ChessBoard extends GridPane {
 		update();
 	}
 }
+=======
+	}
+	
+	public void makeMove(Move move) throws Exception{
+		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
+		moves += currentPlayer.getName()+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+		moveLabel.textProperty().set(moves);
+		game.makeMove(move);
+		update();
+	}
+}
+>>>>>>> c3edaa0d10a7267524614deacbb44877d9ba968b

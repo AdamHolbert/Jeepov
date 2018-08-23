@@ -1,9 +1,7 @@
 package com.gousslegend.deepov.board;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Move;
@@ -168,5 +166,11 @@ public class ListBoard extends Board
 		}
 		
 		myMoves.remove(getLastMove());
+	}
+
+	@Override
+	protected void removeAllPieces() {
+		myPieces = new ArrayList<>(40);
+		myMoves = new ArrayList<>();
 	}
 }

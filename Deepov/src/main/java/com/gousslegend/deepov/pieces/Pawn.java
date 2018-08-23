@@ -177,7 +177,7 @@ public class Pawn extends Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " Pawn " + myPosition;
+		return myColor + " Pawn " + myPosition.toShortString();
 	}
 
 	private boolean enPassantCapturePossible()

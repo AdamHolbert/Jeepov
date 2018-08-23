@@ -25,6 +25,24 @@ public class Game
 			CHESS960
 	}
 	
+	public void buildGame() {
+		winner = null;
+		ui = new UIConsole();
+		setGameMode(ui.getChessMode(new GameMode[] {GameMode.STANDARD, GameMode.CHESS960}));
+		if(ui.getOnePlayer()) {
+			if(ui.getPlayingWhite()) {
+				whitePlayer = ui.getNewPlayer(ui.getPlayerName(Color.WHITE));
+				blackPlayer = getNewComputerPlayer();
+			}else {
+				blackPlayer = ui.getNewPlayer(ui.getPlayerName(Color.BLACK));
+				whitePlayer = getNewComputerPlayer();
+			}
+		} else {
+			whitePlayer = ui.getNewPlayer(ui.getPlayerName(Color.WHITE));
+			blackPlayer = ui.getNewPlayer(ui.getPlayerName(Color.BLACK));
+		}
+	}
+	
 	/**
 	 * Sets up a new board with the new game mode. Sets both white and black players to null.
 	 * @param mode The game mode you would like to set the board too. Can't be null.
@@ -32,11 +50,14 @@ public class Game
 	 */
 	public void setGameMode(GameMode mode){
 		if(mode != null) {
-			this.mode = mode;
-			setMyBoard(new ArrayBoard());
+			if(!mode.equals(this.mode)) {
+				this.mode = mode;
+				setMyBoard(new ArrayBoard());
+				whitePlayer = null;
+				blackPlayer = null;
+			}
 			myBoard.setupBoard(mode);
-			whitePlayer = null;
-			blackPlayer = null;
+			
 		} else {
 			throw new InvalidParameterException("Game mode can't be set to null.");
 		}
@@ -48,7 +69,7 @@ public class Game
 	 */
 	public void resetGame() {
 		if(hasValidModeConfiguration()) {
-			setGameMode(mode);
+			myBoard.setupBoard(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}
@@ -61,27 +82,30 @@ public class Game
 	 * @author Adam Holbert Neumont
 	 */
 	public void makeMove(Move move) {
-		checkValidGameConfigurationLogic();
-		if(!isStalemate() && !isCheckmate()) {			
-			List<Move> moves = myBoard.getLegalMoves().getList();
-	
-			boolean validMove = false;
-			for(Move legalmove : moves)
-			{
-				if(move.partialEquals(legalmove))
-				{
-					validMove = true;
-					break;
+		if(move != null) {
+				if(!isStalemate() && !isCheckmate()) {			
+					List<Move> moves = myBoard.getLegalMoves().getList();
+
+					boolean validMove = false;
+					for(Move legalmove : moves)
+					{
+						if(move.partialEquals(legalmove))
+						{
+							validMove = true;
+							break;
+						}
+					}
+
+					if(validMove) {
+						myBoard.executeMove(move);			
+					} else {
+						throw new InvalidParameterException("The move passed in was invalid.");
+					}
 				}
-			}
-			
-			if(validMove) {
-				myBoard.executeMove(move);			
 			} else {
-				throw new InvalidParameterException("The move passed in was invalid.");
+				winner = getPlayer(myBoard.getColorToPlay().getOppositeColor());
 			}
 		}
-	}
 	
 	/**
 	 * This will return an instance of the player whose color equals the color passed in.
@@ -98,8 +122,23 @@ public class Game
 	 */
 	public Player getWinner()
 	{
-		checkValidGameConfigurationLogic();
-		return isCheckmate() ? getPlayer(myBoard.getColorToPlay()) : null;
+		if(winner != null) {
+			ui.sendMessage("WIN BY FORFEIT");
+			return winner;
+		}
+		if (isCheckmate())
+		{
+			ui.sendMessage("CHECKMATE");
+			return getPlayer(myBoard.getColorToPlay());
+		}
+		else if(isStalemate()) {
+			ui.sendMessage("STALEMATE");
+			return getPlayer(myBoard.getColorToPlay().getOppositeColor());
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public boolean isStalemate() {
@@ -282,6 +321,15 @@ public class Game
 		} else {
 			throw new InvalidParameterException("The black player can't be null");
 		}
+	}
+	
+	public Player getCurrentPlayer() {
+		return getPlayer(myBoard.getColorToPlay());
+	}
+	
+	public void printBoard() {
+		UIConsole.sendMessage("It's "+ getPlayer(myBoard.getColorToPlay()).getName()+"'s turn.");
+		UIConsole.sendMessage(myBoard.toString());
 	}
 	
 	public List<Piece> getSelectable() {

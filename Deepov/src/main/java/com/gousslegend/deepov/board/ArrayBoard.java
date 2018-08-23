@@ -144,4 +144,10 @@ public class ArrayBoard extends Board
 		}
 		myPieces[position.getX()][position.getY()] = null;
 	}
+
+	@Override
+	protected void removeAllPieces() {
+		myPieces = new Piece[8][8];
+		myMoves = new ArrayList<>();
+	}
 }

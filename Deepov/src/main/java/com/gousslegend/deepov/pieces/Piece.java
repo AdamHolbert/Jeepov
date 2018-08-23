@@ -176,7 +176,7 @@ public abstract class Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " Piece " + myPosition;
+		return myColor + " Piece " + myPosition.toShortString();
 	}
 
 	public abstract String getChar();

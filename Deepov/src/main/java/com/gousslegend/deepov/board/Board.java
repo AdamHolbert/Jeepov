@@ -204,6 +204,9 @@ public abstract class Board
 			} while(!validChess960Placement(backRowOrder));
 		}
 		
+		removeAllPieces();
+		colorToPlay = Color.WHITE;
+		
 		//Add all the pieces Pawns
 		for(int i = 0; i < 8; i++)
 		{
@@ -217,6 +220,8 @@ public abstract class Board
 		}
 	}
 	
+	abstract protected void removeAllPieces();
+
 	private static void shuffleArray(ChessPieceType[] array)
 	{
 	    int index;
@@ -298,7 +303,7 @@ public abstract class Board
 
 		for(int i = 7; i >= 0 ; i--)
 		{
-			board += i + "|  ";
+			board += (i+1) + "|  ";
 
 			for(int j = 0; j < 8 ; j++)
 			{
@@ -317,7 +322,7 @@ public abstract class Board
 		}
 
 		board +="   ________________\n";
-		board +="    0 1 2 3 4 5 6 7\n";
+		board +="    a b c d e f g h\n";
 
 		return board;
 	}

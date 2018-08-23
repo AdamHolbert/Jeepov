@@ -64,8 +64,8 @@ public class Move
 		String enPassant = "";
 		if(isEnPassant()) enPassant = " ENPASSANT";
 		
-		return "Move [org=" + myOrigin + ", dest="
-				+ myDestination + castling + capture + promotion + enPassant + "]" + "\n";
+		return "Move [org=" + myOrigin.toShortString() + ", dest="
+				+ myDestination.toShortString() + castling + capture + promotion + enPassant + "]" + "\n";
 	}
 
 	public String toShortString()
