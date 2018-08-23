@@ -191,9 +191,15 @@ public class ChessBoard extends GridPane {
 	
 	public void makeMove(Move move) throws Exception{
 		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
-		moves += currentPlayer.getName()+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+		moves += convertMoveText(move.toShortString());
 		moveLabel.textProperty().set(moves);
 		game.makeMove(move);
 		update();
+	}
+	
+	public String convertMoveText(String bad) {
+		String notation = "";
+		notation = bad;
+		return notation;
 	}
 }
