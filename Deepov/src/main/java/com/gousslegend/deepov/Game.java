@@ -9,16 +9,12 @@ import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Player;
 
-import app.UIConsole;
-
 public class Game
 {
 	private Board myBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
 	private GameMode mode;
-	private UIConsole ui;
-	private Player winner;
 
 	/**
 	 * This is a list of the current programmed game modes.
