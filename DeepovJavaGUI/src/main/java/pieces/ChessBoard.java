@@ -37,8 +37,9 @@ public class ChessBoard extends GridPane {
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
-//			game.resetGame();
-//			try { update(); } catch (Exception e) { e.printStackTrace(); }
+			moves = "";
+			game.resetGame();
+			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
 	}
 	
@@ -58,8 +59,8 @@ public class ChessBoard extends GridPane {
 			for(int b = 0; b < 8; b++){
 				Color bgColor = null;
 				//Empty squares between teams' pieces
-				if((a - b) % 2 == 0) bgColor = Color.BLACK;
-				else bgColor = Color.WHITE;
+				if((a - b) % 2 == 0) bgColor = Color.WHITE;
+				else bgColor = Color.BLACK;
 				
 				list[a][b] = new GridPiece("", bgColor, this, null);
 			}
@@ -70,7 +71,7 @@ public class ChessBoard extends GridPane {
 			int x = currentPiece.getPosition().getX();
 			int y = currentPiece.getPosition().getY();
 			String tempPiece = "";
-			Color bgColor = list[x][y].bgColor.equals("#000") ? Color.BLACK : Color.WHITE;
+			Color bgColor = list[7 - x][7 - y].bgColor.equals("#000") ? Color.BLACK : Color.WHITE;
 			
 			String simpleName =  currentPiece.getClass().getSimpleName();
 			Color color = currentPiece.getColor();
@@ -105,22 +106,23 @@ public class ChessBoard extends GridPane {
 			}else if(simpleName.equals("King") && color == Color.WHITE){
 				tempPiece = "wk";
 			}
-			list[x][y] = new GridPiece(tempPiece, bgColor, this, currentPiece);
+			list[7 - x][7 - y] = new GridPiece(tempPiece, bgColor, this, currentPiece);
 			i++;
 		}
 		for(int a = 0; a < 8; a++){
 			for(int b = 0; b < 8; b++){
-				this.add(list[a][b], a, b, 1, 1);
+				this.add(list[7 - a][7 - b], 7 - a, 7 - b, 1, 1);
 			}
 		}
-		//Turn Handler
 		if(currentPlayer instanceof Deepov) {
 			@SuppressWarnings("restriction")
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
-				game.makeMove(((Deepov) currentPlayer).takeTurn());
+				Move move = ((Deepov) currentPlayer).takeTurn();
+				game.makeMove(move);
 
-//				moveLabel.textProperty().set(moves);
+				moves += playerName+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+				moveLabel.textProperty().set(moves);
 				try { update();
 				} catch (Exception e) { e.printStackTrace(); }
 			});
@@ -136,7 +138,7 @@ public class ChessBoard extends GridPane {
 			Piece currentPiece = game.getSelectable().get(i);
 			int x = currentPiece.getPosition().getX();
 			int y = currentPiece.getPosition().getY();
-			list[x][y].select();
+			list[7 - x][7 - y].select();
 			i++;
 		}
 	}
@@ -179,7 +181,7 @@ public class ChessBoard extends GridPane {
 					Move move = ml.getList().get(i);
 					int x = move.getDestination().getX();
 					int y = move.getDestination().getY();
-					GridPiece current = list[x][y];
+					GridPiece current = list[7 - x][7 - y];
 					current.setMove(move);
 					current.highlight();
 				}
@@ -189,9 +191,15 @@ public class ChessBoard extends GridPane {
 	
 	public void makeMove(Move move) throws Exception{
 		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
-		moves += currentPlayer.getName()+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+		moves += convertMoveText(move.toShortString());
 		moveLabel.textProperty().set(moves);
 		game.makeMove(move);
 		update();
+	}
+	
+	public String convertMoveText(String bad) {
+		String notation = "";
+		notation = bad;
+		return notation;
 	}
 }

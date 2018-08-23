@@ -11,7 +11,7 @@ public class Driver {
 		do {
 			g = ui.buildGame();
 			while(ui.getWinner() == null) {
-				ui.printBoard(g.getBoard());
+				ui.printBoard();
 				g.makeMove(ui.getMove(g.getSelectable(),g.getCurrentPlayer()));
 			}
 		} while(ui.getContinue());

@@ -7,15 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.gousslegend.deepov.Color;
-import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.Position;
-import com.gousslegend.deepov.pieces.Bishop;
 import com.gousslegend.deepov.pieces.King;
-import com.gousslegend.deepov.pieces.Knight;
-import com.gousslegend.deepov.pieces.Pawn;
 import com.gousslegend.deepov.pieces.Piece;
-import com.gousslegend.deepov.pieces.Queen;
-import com.gousslegend.deepov.pieces.Rook;
 import com.gousslegend.deepov.utils.Utils;
 
 public class MapBoard extends Board
@@ -135,5 +129,11 @@ public class MapBoard extends Board
 	public void removePiece(Position position)
 	{
 		myPieces.remove(position);
+	}
+
+	@Override
+	protected void removeAllPieces() {
+		myPieces = new HashMap<>(40);
+		myMoves = new ArrayList<>();
 	}
 }

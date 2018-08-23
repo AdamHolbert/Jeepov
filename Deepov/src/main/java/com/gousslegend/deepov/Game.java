@@ -329,8 +329,4 @@ public class Game
 	public Color getCurrentTurnColor() {
 		return myBoard.getColorToPlay();
 	}
-	
-	public Board getBoard() {
-		return myBoard;
-	}
 }

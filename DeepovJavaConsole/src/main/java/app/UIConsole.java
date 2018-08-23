@@ -56,20 +56,16 @@ public class UIConsole  {
 		if(getOnePlayer()) {
 			if(getPlayingWhite()) {
 				g.setWhitePlayer(getNewPlayer(getPlayerName(Color.WHITE)));
-				g.setBlackPlayer(getNewComputerPlayer(g.getBoard()));
+				g.setBlackPlayer(g.getNewComputerPlayer());
 			}else {
 				g.setBlackPlayer(getNewPlayer(getPlayerName(Color.BLACK)));
-				g.setWhitePlayer(getNewComputerPlayer(g.getBoard()));
+				g.setWhitePlayer(g.getNewComputerPlayer());
 			}
 		} else {
 			g.setWhitePlayer(getNewPlayer(getPlayerName(Color.WHITE)));
 			g.setBlackPlayer(getNewPlayer(getPlayerName(Color.BLACK)));
 		}
 		return g;
-	}
-
-	private Player getNewComputerPlayer(Board board) {
-		return new Deepov(board);
 	}
 
 	public Player getNewPlayer(String name) {
@@ -183,7 +179,7 @@ public class UIConsole  {
 	
 	public Player getWinner() {
 		if(forfeit) {
-			return g.getPlayer(g.getBoard().getColorToPlay().getOppositeColor());
+			return g.getPlayer(g.getCurrentTurnColor().getOppositeColor());
 		}else {
 			return g.getWinner();
 		}
@@ -269,8 +265,27 @@ public class UIConsole  {
 		return false;
 	}
 
-	public void printBoard(Board board) {
+	public void printBoard() {
+		Piece board[][] = new Piece[8][8];
 		setTurn(g.getCurrentPlayer());
-		updateBoard(board);
+		List<Piece> pieces = g.getBoardPieces();
+		
+		for(Piece p : pieces) {
+			board[p.getPosition().getX()][p.getPosition().getY()] = p;
+		}
+		
+		for(int i = 0; i < 8; i++) {
+			System.out.print((i+1) + "|  ");
+			for(int j = 0; j < 8; j++) {
+				if(board[j][i] != null) {
+					System.out.print(board[j][i].getChar()+" ");
+				} else {
+					System.out.print("* ");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println("   ________________");
+		System.out.println("    a b c d e f g h");
 	}
 }
