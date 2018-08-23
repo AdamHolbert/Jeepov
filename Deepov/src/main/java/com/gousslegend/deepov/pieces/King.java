@@ -272,7 +272,7 @@ public class King extends Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " King " + myPosition;
+		return myColor + " King " + myPosition.toShortString();
 	}
 
 	@Override

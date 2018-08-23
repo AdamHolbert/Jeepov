@@ -1,5 +1,10 @@
 package com.gousslegend.player;
 
+import java.util.List;
+
+import com.gousslegend.deepov.Move;
+import com.gousslegend.deepov.pieces.Piece;
+
 public abstract class Player
 {
 	protected String myName = "Human";
@@ -17,5 +22,10 @@ public abstract class Player
 	public void setName(String myName)
 	{
 		this.myName = myName;
+	}
+
+	public Move takeTurn(List<Piece> selectable) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

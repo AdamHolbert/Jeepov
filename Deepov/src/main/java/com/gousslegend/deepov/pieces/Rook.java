@@ -237,7 +237,7 @@ public class Rook extends Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " Rook " + myPosition;
+		return myColor + " Rook " + myPosition.toShortString();
 	}
 
 	@Override
