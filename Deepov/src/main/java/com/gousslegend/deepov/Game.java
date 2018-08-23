@@ -32,11 +32,14 @@ public class Game
 	 */
 	public void setGameMode(GameMode mode){
 		if(mode != null) {
-			this.mode = mode;
-			setMyBoard(new ArrayBoard());
+			if(!mode.equals(this.mode)) {
+				this.mode = mode;
+				setMyBoard(new ArrayBoard());
+				whitePlayer = null;
+				blackPlayer = null;
+			}
 			myBoard.setupBoard(mode);
-			whitePlayer = null;
-			blackPlayer = null;
+			
 		} else {
 			throw new InvalidParameterException("Game mode can't be set to null.");
 		}
@@ -48,7 +51,7 @@ public class Game
 	 */
 	public void resetGame() {
 		if(hasValidModeConfiguration()) {
-			setGameMode(mode);
+			myBoard.setupBoard(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}

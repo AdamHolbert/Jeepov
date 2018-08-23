@@ -204,6 +204,9 @@ public abstract class Board
 			} while(!validChess960Placement(backRowOrder));
 		}
 		
+		removeAllPieces();
+		colorToPlay = Color.WHITE;
+		
 		//Add all the pieces Pawns
 		for(int i = 0; i < 8; i++)
 		{
@@ -217,6 +220,8 @@ public abstract class Board
 		}
 	}
 	
+	abstract protected void removeAllPieces();
+
 	private static void shuffleArray(ChessPieceType[] array)
 	{
 	    int index;

@@ -37,8 +37,8 @@ public class ChessBoard extends GridPane {
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
-//			game.resetGame();
-//			try { update(); } catch (Exception e) { e.printStackTrace(); }
+			game.resetGame();
+			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
 	}
 	
