@@ -33,7 +33,7 @@ public class Deepov extends Player
 		this.myBoard = board;
 	}
 
-	public Move takeTurn()
+	public Move takeTurn(List<Piece> list)
 	{
 		negaMaxRoot(3);
 		return myBestmove;
