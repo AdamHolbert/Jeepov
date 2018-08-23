@@ -6,35 +6,54 @@ import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
+import com.gousslegend.player.Human;
 import com.gousslegend.player.Player;
 
 import app.App;
+import app.SceneName;
 import javafx.animation.PauseTransition;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import javafx.scene.control.*;
 
 public class ChessBoard extends GridPane {
 	GridPiece[][] list = new GridPiece[8][8];
 	private Game game = null;
 	private GridPiece selectedGridPiece = null;
-	private Color computerColor;
 	private App app = null;
+	private Label turnLabel;
+	private Label moveLabel;
+	private Button reset = null;
+	private String moves = "";
 	
-	public ChessBoard(Game g, Color pcColor, App app) throws Exception{
+
+	@SuppressWarnings("restriction")
+	public ChessBoard(Game g, App app, Label t, Label m, Button b) throws Exception{
 		this.game = g;
 		this.app = app;
+		this.turnLabel = t;
+		this.moveLabel = m;
+		this.reset = b;
 		update();
+		b.textProperty().set("Reset");
+		b.setOnAction((event) -> {
+//			game.resetGame();
+//			try { update(); } catch (Exception e) { e.printStackTrace(); }
+		});
 	}
 	
 	@SuppressWarnings("restriction")
 	private void update() throws Exception{
+		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
+		String playerName = (currentPlayer.getName() == "Deepov") ? "AI" : currentPlayer.getName();
+		turnLabel.textProperty().set(playerName+"'s Turn");
+		
 		this.getChildren().clear();
 		if(game.isCheckmate() || game.isStalemate()) {
-//			app.setScene(SceneName.EndScreen);
+			app.setScene(SceneName.EndScreen);
 			return;
 		}
 		int i = 0;
-		boolean flip = false;
 		for(int a = 0; a < 8; a++){
 			for(int b = 0; b < 8; b++){
 				Color bgColor = null;
@@ -42,57 +61,51 @@ public class ChessBoard extends GridPane {
 				if((a - b) % 2 == 0) bgColor = Color.BLACK;
 				else bgColor = Color.WHITE;
 				
-				GridPiece tempPiece = new GridPiece("", bgColor, this, null);
-				list[a][b] = tempPiece;
-				//The list of pieces on board
-				
-				//List is from 0 - 31. Flip boolean on multiples of 4
-				if((i / 4) % 2 == 1) flip = true; //i == 4 || i == 12 || i == 20 || i == 28
-				else if(i % 8 == 0) flip = false; //i == 8 || i == 16 || i == 24
+				list[a][b] = new GridPiece("", bgColor, this, null);
 			}
 		}
+		//The list of pieces on board
 		while(i < game.getBoardPieces().size()){
-			
 			Piece currentPiece = game.getBoardPieces().get(i);
 			int x = currentPiece.getPosition().getX();
 			int y = currentPiece.getPosition().getY();
-			GridPiece tempPiece = null;
+			String tempPiece = "";
 			Color bgColor = list[x][y].bgColor.equals("#000") ? Color.BLACK : Color.WHITE;
 			
 			String simpleName =  currentPiece.getClass().getSimpleName();
 			Color color = currentPiece.getColor();
 			
 			if(simpleName.equals("Pawn") && color == Color.BLACK){
-				tempPiece = new GridPiece("bp", bgColor, this, currentPiece);
+				tempPiece = "bp";
 			}else if(simpleName.equals("Pawn") && color == Color.WHITE){
-				tempPiece = new GridPiece("wp", bgColor, this, currentPiece);
+				tempPiece = "wp";
 			}
 			if(simpleName.equals("Rook") && color == Color.BLACK){
-				tempPiece = new GridPiece("br", bgColor, this, currentPiece);
+				tempPiece = "br";
 			}else if(simpleName.equals("Rook") && color == Color.WHITE){
-				tempPiece = new GridPiece("wr", bgColor, this, currentPiece);
+				tempPiece = "wr";
 			}
 			if(simpleName.equals("Knight") && color == Color.BLACK){
-				tempPiece = new GridPiece("bn", bgColor, this, currentPiece);
+				tempPiece = "bn";
 			}else if(simpleName.equals("Knight") && color == Color.WHITE){
-				tempPiece = new GridPiece("wn", bgColor, this, currentPiece);
+				tempPiece = "wn";
 			}
 			if(simpleName.equals("Bishop") && color == Color.BLACK){
-				tempPiece = new GridPiece("bb", bgColor, this, currentPiece);
+				tempPiece = "bb";
 			}else if(simpleName.equals("Bishop") && color == Color.WHITE){
-				tempPiece = new GridPiece("wb", bgColor, this, currentPiece);
+				tempPiece = "wb";
 			}
 			if(simpleName.equals("Queen") && color == Color.BLACK){
-				tempPiece = new GridPiece("bq", bgColor, this, currentPiece);
+				tempPiece = "bq";
 			}else if(simpleName.equals("Queen") && color == Color.WHITE){
-				tempPiece = new GridPiece("wq", bgColor, this, currentPiece);
+				tempPiece = "wq";
 			}
 			if(simpleName.equals("King") && color == Color.BLACK){
-				tempPiece = new GridPiece("bk", bgColor, this, currentPiece);
+				tempPiece = "bk";
 			}else if(simpleName.equals("King") && color == Color.WHITE){
-				tempPiece = new GridPiece("wk", bgColor, this, currentPiece);
+				tempPiece = "wk";
 			}
-			list[x][y] = tempPiece;
+			list[x][y] = new GridPiece(tempPiece, bgColor, this, currentPiece);
 			i++;
 		}
 		for(int a = 0; a < 8; a++){
@@ -100,23 +113,20 @@ public class ChessBoard extends GridPane {
 				this.add(list[a][b], a, b, 1, 1);
 			}
 		}
-		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
+		//Turn Handler
 		if(currentPlayer instanceof Deepov) {
 			@SuppressWarnings("restriction")
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
 				game.makeMove(((Deepov) currentPlayer).takeTurn());
-				try {
-					update();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
+//				moveLabel.textProperty().set(moves);
+				try { update();
+				} catch (Exception e) { e.printStackTrace(); }
 			});
 			delay.play();
 		} else {			
 			highlightSelectable();
-			
 		}
 	}
 
@@ -155,7 +165,6 @@ public class ChessBoard extends GridPane {
 				}
 			}
 			if(validSelection){
-				
 				//deselect any selected pieces
 				for(int i = 0; i < list.length; i++){
 					for(int j = 0; j < list[i].length; j++){
@@ -179,6 +188,9 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
+		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
+		moves += currentPlayer.getName()+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+		moveLabel.textProperty().set(moves);
 		game.makeMove(move);
 		update();
 	}

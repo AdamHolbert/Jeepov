@@ -312,15 +312,25 @@ public class App extends Application {
 			
 			scene = new Scene(gp, WIDTH, HEIGHT);
 		} else if(sn == SceneName.ChessGame) {
-			stage.setTitle("GridPane Title");
+			stage.setTitle("Game");
+			
+			Label turnLabel = new Label();
+			turnLabel.setStyle("-fx-font-size: 25;");
+			turnLabel.setWrapText(true);
+			turnLabel.setTextAlignment(TextAlignment.CENTER);
+			
+			Label moveLabel = new Label();
+			Button reset = new Button();
+			reset.setStyle("-fx-font-size: 18; " + BUTTON_STYLE);
 			
 			ChessBoard gridPane = null;
-			try { gridPane = new ChessBoard(g, computerColor, this);
+			try { gridPane = new ChessBoard(g, this, turnLabel, moveLabel, reset);
 			} catch (Exception e) { e.printStackTrace(); }
 			
 			FlowPane flowPane = new FlowPane();
-			flowPane.getChildren().addAll();
-	        
+			flowPane.orientationProperty().set(Orientation.VERTICAL);
+			flowPane.getChildren().addAll(reset, turnLabel, moveLabel);
+			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
 			tilePane.getChildren().addAll(gridPane, flowPane);
 
