@@ -37,6 +37,7 @@ public class ChessBoard extends GridPane {
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
+			moves = "";
 //			game.resetGame();
 //			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
@@ -113,14 +114,16 @@ public class ChessBoard extends GridPane {
 				this.add(list[a][b], a, b, 1, 1);
 			}
 		}
-		//Turn Handler
+		//Computer Handler
 		if(currentPlayer instanceof Deepov) {
 			@SuppressWarnings("restriction")
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
-				game.makeMove(((Deepov) currentPlayer).takeTurn());
+				Move move = ((Deepov) currentPlayer).takeTurn();
+				game.makeMove(move);
 
-//				moveLabel.textProperty().set(moves);
+				moves += playerName+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
+				moveLabel.textProperty().set(moves);
 				try { update();
 				} catch (Exception e) { e.printStackTrace(); }
 			});

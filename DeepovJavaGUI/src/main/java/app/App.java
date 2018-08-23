@@ -320,16 +320,19 @@ public class App extends Application {
 			turnLabel.setTextAlignment(TextAlignment.CENTER);
 			
 			Label moveLabel = new Label();
-			Button reset = new Button();
-			reset.setStyle("-fx-font-size: 18; " + BUTTON_STYLE);
+			moveLabel.setWrapText(true);
+			moveLabel.setTextAlignment(TextAlignment.CENTER);
+			
+			Button resetBtn = new Button();
+			resetBtn.setStyle("-fx-font-size: 18; " + BUTTON_STYLE);
 			
 			ChessBoard gridPane = null;
-			try { gridPane = new ChessBoard(g, this, turnLabel, moveLabel, reset);
+			try { gridPane = new ChessBoard(g, this, turnLabel, moveLabel, resetBtn);
 			} catch (Exception e) { e.printStackTrace(); }
 			
 			FlowPane flowPane = new FlowPane();
 			flowPane.orientationProperty().set(Orientation.VERTICAL);
-			flowPane.getChildren().addAll(reset, turnLabel, moveLabel);
+			flowPane.getChildren().addAll(resetBtn, turnLabel, moveLabel);
 			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
 			tilePane.getChildren().addAll(gridPane, flowPane);
