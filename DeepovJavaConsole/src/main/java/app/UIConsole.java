@@ -63,7 +63,7 @@ public class UIConsole  {
 		if(player instanceof Human) {
 			return getMove(pieces);
 		}else {
-			return player.takeTurn(pieces);
+			return ((Deepov) player).takeTurn();
 		}
 	}
 		

@@ -69,8 +69,8 @@ public class Game
 	 * @author Adam Holbert Neumont
 	 */
 	public void resetGame() {
-		if(mode != null) {
-			setGameMode(mode);			
+		if(hasValidModeConfiguration()) {
+			setGameMode(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}
@@ -84,28 +84,29 @@ public class Game
 	 */
 	public void makeMove(Move move) {
 		if(move != null) {
-		List<Move> moves = myBoard.getLegalMoves().getList();
+				if(!isStalemate() && !isCheckmate()) {			
+					List<Move> moves = myBoard.getLegalMoves().getList();
 
-		boolean validMove = false;
-		for(Move legalmove : moves)
-		{
-			if(move.partialEquals(legalmove))
-			{
-				validMove = true;
-				break;
+					boolean validMove = false;
+					for(Move legalmove : moves)
+					{
+						if(move.partialEquals(legalmove))
+						{
+							validMove = true;
+							break;
+						}
+					}
+
+					if(validMove) {
+						myBoard.executeMove(move);			
+					} else {
+						throw new InvalidParameterException("The move passed in was invalid.");
+					}
+				}
+			} else {
+				winner = getPlayer(myBoard.getColorToPlay().getOppositeColor());
 			}
 		}
-		
-		if(validMove) {
-			myBoard.executeMove(move);			
-		} else {
-			throw new InvalidParameterException("The move passed in was invalid.");
-		}
-		} else {
-			winner = getPlayer(myBoard.getColorToPlay().getOppositeColor());
-		}
-		
-	}
 	
 	/**
 	 * This will return an instance of the player whose color equals the color passed in.
@@ -126,12 +127,12 @@ public class Game
 			ui.sendMessage("WIN BY FORFEIT");
 			return winner;
 		}
-		if (myBoard.isCheckmate())
+		if (isCheckmate())
 		{
 			ui.sendMessage("CHECKMATE");
 			return getPlayer(myBoard.getColorToPlay());
 		}
-		else if(getSelectable().size() == 0) {
+		else if(isStalemate()) {
 			ui.sendMessage("STALEMATE");
 			return getPlayer(myBoard.getColorToPlay().getOppositeColor());
 		}
@@ -139,6 +140,16 @@ public class Game
 		{
 			return null;
 		}
+	}
+	
+	public boolean isStalemate() {
+		checkValidGameConfigurationLogic();
+		return getSelectable().size() == 0;
+	}
+	
+	public boolean isCheckmate() {
+		checkValidGameConfigurationLogic();
+		return myBoard.isCheckmate();
 	}
 	
 	public Player getNewComputerPlayer() {
@@ -323,6 +334,7 @@ public class Game
 	}
 	
 	public List<Piece> getSelectable() {
+		checkValidGameConfigurationLogic();
 		List<Piece> returnList = myBoard.getPieces();
 		Color currentColor = myBoard.getColorToPlay();
 		
@@ -335,4 +347,24 @@ public class Game
 		
 	}
 	
+	public boolean hasValidPlayerConfiguration() {
+		return (whitePlayer != null && blackPlayer != null); 
+	}
+	
+	public boolean hasValidModeConfiguration() {
+		return mode != null && myBoard != null;
+	}
+	
+	public void checkValidGameConfigurationLogic(){
+		if(!hasValidPlayerConfiguration()) {
+			throw new IllegalStateException("The players have not been set up properly.");
+		}
+		if(!hasValidModeConfiguration()) {
+			throw new IllegalStateException("The mode has not been set up properly.");
+		}
+	}
+	
+	public Color getCurrentTurnColor() {
+		return myBoard.getColorToPlay();
+	}
 }

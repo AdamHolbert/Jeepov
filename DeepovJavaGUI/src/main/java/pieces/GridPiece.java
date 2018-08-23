@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.gousslegend.deepov.Color;
+import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
@@ -18,11 +19,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class GridPiece extends Button{
-	public String color;
+	public String bgColor;
+	public Color pieceColor;
 	private String name;
 	public ChessBoard board;
 	private Piece piece;
 	public Position pos = new Position();
+	private boolean isSelected = false;
+	private Move move;
 	
 	@SuppressWarnings("restriction")
 	public GridPiece(String fileName, Color bgColor, ChessBoard board, Piece currentPiece) throws Exception{
@@ -30,6 +34,7 @@ public class GridPiece extends Button{
 		this.board = board;
 		this.piece = currentPiece;
 		if(!fileName.equalsIgnoreCase("")){
+			pieceColor = (fileName.charAt(0) == 'b') ? Color.BLACK : Color.WHITE;
 			ImageView imageView = new ImageView(new Image(new FileInputStream("src/main/resources/"+fileName+".png")));
 			imageView.setFitWidth(30);
 			imageView.setFitHeight(30);
@@ -41,28 +46,32 @@ public class GridPiece extends Button{
 			this.setMaxSize(50, 50);
 		}
 		if(bgColor == Color.BLACK){
-			this.color = "#000";
+			this.bgColor = "#000";
 		}else if(bgColor == Color.WHITE){
-			this.color = "#fff";
+			this.bgColor = "#fff";
 		}
-		this.setStyle("-fx-background-color: "+this.color+"; -fx-border-width: 0px;");
+		this.setStyle("-fx-background-color: "+this.bgColor+"; -fx-border-width: 0px; -fx-border-radius: 0px;");
 		//On Click
 		this.setOnAction((value) -> {
-			if(!this.getStyle().equals("-fx-background-color: #33f;") || !name.equals(""))
+			if(!this.isSelected && this.piece != null)
 				board.selectedPiece(this);
-			else {
-				try { board.makeMove(this.color, pos);
-				} catch (Exception e) { e.printStackTrace(); }
-//				this.setStyle("-fx-background-color: #f33;");
-			}
+			if(this.getMove() != null){
+				try { board.makeMove(this.getMove());
+				} catch (Exception e) { e.printStackTrace(); } }
 		});
 	}
 
 	public void highlight() {
-		this.setStyle("-fx-background-color: #33f;");
+		isSelected = true;
+		if(this.piece != null){
+			this.setStyle("-fx-background-color: "+(this.bgColor.equals("#000") ? "#600" : "#faa")+"; -fx-opacity: 0.7;");
+		} else {
+			this.setStyle("-fx-background-color: "+(this.bgColor.equals("#000") ? "#060" : "#afa")+"; -fx-opacity: 0.7;");
+		}
 	}
 	public void unhighlight() {
-		this.setStyle("-fx-background-color: "+this.color+";");
+		isSelected = false;
+		this.setStyle("-fx-background-color: "+this.bgColor+";");
 	}
 
 	public ChessPieceType getType(){
@@ -88,9 +97,27 @@ public class GridPiece extends Button{
 		return piece;
 	}
 	public Color getColor(){
-		return (this.color.equals("#000")) ? Color.BLACK : Color.WHITE;
+		return (this.bgColor.equals("#000")) ? Color.BLACK : Color.WHITE;
 	}
 	public void setColor(String bgColor){
-		this.color = bgColor;
+		this.bgColor = bgColor;
 	}
+
+	public void setMove(Move move) {
+		this.move = move;
+	}
+
+	public Move getMove() {
+		return move;
+	}
+
+	public void unselect() {
+		this.setStyle("-fx-background-color: " + this.bgColor +";");
+	}
+
+	public void select() {
+		this.setStyle("-fx-background-color: "+(this.bgColor.equals("#000") ? "#002" : "#ddf")+"; -fx-opacity: 0.7; -fx-border-color: #00f;");
+		
+	}
+	
 }
