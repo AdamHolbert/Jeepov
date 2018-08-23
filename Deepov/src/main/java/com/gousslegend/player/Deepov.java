@@ -33,7 +33,6 @@ public class Deepov extends Player
 		this.myBoard = board;
 	}
 
-	@Override
 	public Move takeTurn()
 	{
 		negaMaxRoot(3);
