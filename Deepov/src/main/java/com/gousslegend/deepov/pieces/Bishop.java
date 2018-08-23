@@ -288,7 +288,7 @@ public class Bishop extends Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " Bishop " + myPosition;
+		return myColor + " Bishop " + myPosition.toShortString();
 	}
 
 	@Override

@@ -9,12 +9,16 @@ import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Player;
 
+import app.UIConsole;
+
 public class Game
 {
 	private Board myBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
 	private GameMode mode;
+	private UIConsole ui;
+	private Player winner;
 
 	/**
 	 * This is a list of the current programmed game modes.
@@ -23,6 +27,24 @@ public class Game
 	public enum GameMode {
 			STANDARD,
 			CHESS960
+	}
+	
+	public void buildGame() {
+		winner = null;
+		ui = new UIConsole();
+		setGameMode(ui.getChessMode(new GameMode[] {GameMode.STANDARD, GameMode.CHESS960}));
+		if(ui.getOnePlayer()) {
+			if(ui.getPlayingWhite()) {
+				whitePlayer = ui.getNewPlayer(ui.getPlayerName(Color.WHITE));
+				blackPlayer = getNewComputerPlayer();
+			}else {
+				blackPlayer = ui.getNewPlayer(ui.getPlayerName(Color.BLACK));
+				whitePlayer = getNewComputerPlayer();
+			}
+		} else {
+			whitePlayer = ui.getNewPlayer(ui.getPlayerName(Color.WHITE));
+			blackPlayer = ui.getNewPlayer(ui.getPlayerName(Color.BLACK));
+		}
 	}
 	
 	/**
@@ -61,27 +83,30 @@ public class Game
 	 * @author Adam Holbert Neumont
 	 */
 	public void makeMove(Move move) {
-		checkValidGameConfigurationLogic();
-		if(!isStalemate() && !isCheckmate()) {			
-			List<Move> moves = myBoard.getLegalMoves().getList();
-	
-			boolean validMove = false;
-			for(Move legalmove : moves)
-			{
-				if(move.partialEquals(legalmove))
-				{
-					validMove = true;
-					break;
+		if(move != null) {
+				if(!isStalemate() && !isCheckmate()) {			
+					List<Move> moves = myBoard.getLegalMoves().getList();
+
+					boolean validMove = false;
+					for(Move legalmove : moves)
+					{
+						if(move.partialEquals(legalmove))
+						{
+							validMove = true;
+							break;
+						}
+					}
+
+					if(validMove) {
+						myBoard.executeMove(move);			
+					} else {
+						throw new InvalidParameterException("The move passed in was invalid.");
+					}
 				}
-			}
-			
-			if(validMove) {
-				myBoard.executeMove(move);			
 			} else {
-				throw new InvalidParameterException("The move passed in was invalid.");
+				winner = getPlayer(myBoard.getColorToPlay().getOppositeColor());
 			}
 		}
-	}
 	
 	/**
 	 * This will return an instance of the player whose color equals the color passed in.
@@ -98,8 +123,23 @@ public class Game
 	 */
 	public Player getWinner()
 	{
-		checkValidGameConfigurationLogic();
-		return isCheckmate() ? getPlayer(myBoard.getColorToPlay()) : null;
+		if(winner != null) {
+			ui.sendMessage("WIN BY FORFEIT");
+			return winner;
+		}
+		if (isCheckmate())
+		{
+			ui.sendMessage("CHECKMATE");
+			return getPlayer(myBoard.getColorToPlay());
+		}
+		else if(isStalemate()) {
+			ui.sendMessage("STALEMATE");
+			return getPlayer(myBoard.getColorToPlay().getOppositeColor());
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public boolean isStalemate() {
@@ -282,6 +322,15 @@ public class Game
 		} else {
 			throw new InvalidParameterException("The black player can't be null");
 		}
+	}
+	
+	public Player getCurrentPlayer() {
+		return getPlayer(myBoard.getColorToPlay());
+	}
+	
+	public void printBoard() {
+		UIConsole.sendMessage("It's "+ getPlayer(myBoard.getColorToPlay()).getName()+"'s turn.");
+		UIConsole.sendMessage(myBoard.toString());
 	}
 	
 	public List<Piece> getSelectable() {

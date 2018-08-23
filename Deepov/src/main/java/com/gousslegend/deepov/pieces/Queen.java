@@ -59,7 +59,7 @@ public class Queen extends Piece
 	@Override
 	public String toString()
 	{
-		return myColor + " Queen " + myPosition;
+		return myColor + " Queen " + myPosition.toShortString();
 	}
 
 	@Override
