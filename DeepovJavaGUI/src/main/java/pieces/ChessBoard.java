@@ -187,7 +187,6 @@ public class ChessBoard extends GridPane {
 				}
 			}
 		}
-<<<<<<< HEAD
 	}
 	
 	public void makeMove(Move move) throws Exception{
@@ -198,15 +197,3 @@ public class ChessBoard extends GridPane {
 		update();
 	}
 }
-=======
-	}
-	
-	public void makeMove(Move move) throws Exception{
-		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
-		moves += currentPlayer.getName()+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
-		moveLabel.textProperty().set(moves);
-		game.makeMove(move);
-		update();
-	}
-}
->>>>>>> c3edaa0d10a7267524614deacbb44877d9ba968b
