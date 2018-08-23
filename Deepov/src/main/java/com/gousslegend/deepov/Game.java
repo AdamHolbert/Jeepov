@@ -32,14 +32,11 @@ public class Game
 	 */
 	public void setGameMode(GameMode mode){
 		if(mode != null) {
-			if(!mode.equals(this.mode)) {
-				this.mode = mode;
-				setMyBoard(new ArrayBoard());
-				whitePlayer = null;
-				blackPlayer = null;
-			}
+			this.mode = mode;
+			setMyBoard(new ArrayBoard());
 			myBoard.setupBoard(mode);
-			
+			whitePlayer = null;
+			blackPlayer = null;
 		} else {
 			throw new InvalidParameterException("Game mode can't be set to null.");
 		}
@@ -51,7 +48,7 @@ public class Game
 	 */
 	public void resetGame() {
 		if(hasValidModeConfiguration()) {
-			myBoard.setupBoard(mode);
+			setGameMode(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}
@@ -64,29 +61,28 @@ public class Game
 	 * @author Adam Holbert Neumont
 	 */
 	public void makeMove(Move move) {
-		checkValidGameConfigurationLogic();
 		if(move != null) {
-			if(!isStalemate() && !isCheckmate()) {
-				List<Move> moves = myBoard.getLegalMoves().getList();
+				if(!isStalemate() && !isCheckmate()) {			
+					List<Move> moves = myBoard.getLegalMoves().getList();
 
-				boolean validMove = false;
-				for(Move legalmove : moves)
-				{
-					if(move.partialEquals(legalmove))
+					boolean validMove = false;
+					for(Move legalmove : moves)
 					{
-						validMove = true;
-						break;
+						if(move.partialEquals(legalmove))
+						{
+							validMove = true;
+							break;
+						}
 					}
-				}
 
-				if(validMove) {
-					myBoard.executeMove(move);			
-				} else {
-					throw new InvalidParameterException("The move passed in was invalid.");
+					if(validMove) {
+						myBoard.executeMove(move);			
+					} else {
+						throw new InvalidParameterException("The move passed in was invalid.");
+					}
 				}
 			}
 		}
-	}
 	
 	/**
 	 * This will return an instance of the player whose color equals the color passed in.
@@ -103,8 +99,14 @@ public class Game
 	 */
 	public Player getWinner()
 	{
-		checkValidGameConfigurationLogic();
-		return isCheckmate() ? getPlayer(myBoard.getColorToPlay()) : null;
+		if (isCheckmate())
+		{
+			return getPlayer(myBoard.getColorToPlay());
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public boolean isStalemate() {
