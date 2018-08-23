@@ -24,7 +24,7 @@ public abstract class Player
 		this.myName = myName;
 	}
 
-	public Move takeTurn(List<Piece> selectable) {
+	public Move takeTurn() {
 		// TODO Auto-generated method stub
 		return null;
 	}
