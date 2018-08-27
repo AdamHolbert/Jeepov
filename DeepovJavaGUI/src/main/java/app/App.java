@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import pieces.ChessBoard;
 import javafx.geometry.Orientation;
 import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 
 @SuppressWarnings("restriction")
 public class App extends Application {
@@ -280,12 +281,12 @@ public class App extends Application {
 			label1.setTextAlignment(TextAlignment.CENTER);
 			
 			TextField tf = new TextField();
-			tf.setMaxWidth(WIDTH - 300);
+			tf.setMaxWidth(WIDTH - 400);
 			tf.setText("Player 1");
 			tf.setFocusTraversable(false);
 			
 			TextField tf1 = new TextField();
-			tf1.setMaxWidth(WIDTH - 300);
+			tf1.setMaxWidth(WIDTH - 400);
 			tf1.setText("Player 2");
 			tf1.setFocusTraversable(false);
 			
@@ -345,7 +346,7 @@ public class App extends Application {
 			FlowPane flowPane = new FlowPane();
 			flowPane.orientationProperty().set(Orientation.VERTICAL);
 			flowPane.getChildren().addAll(resetBtn, turnLabel, gp);
-			flowPane.setPadding(new Insets(5, 0, 0, 20));
+			flowPane.setPadding(new Insets(0, 0, 0, 20));
 			flowPane.setColumnHalignment(HPos.CENTER);
 			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
@@ -361,6 +362,8 @@ public class App extends Application {
 			gp2.add(resetBtn, 0, 1);
 			gp2.setStyle(PANE_STYLE);
 			
+			GridPane.setValignment(moveLabel, VPos.TOP);
+			GridPane.setValignment(move2Label, VPos.TOP);
 			GridPane.setHalignment(resetBtn, HPos.CENTER);
 			GridPane.setHalignment(moveLabel, HPos.CENTER);
 			GridPane.setHalignment(move2Label, HPos.CENTER);
