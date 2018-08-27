@@ -30,6 +30,7 @@ public class ChessBoard extends GridPane {
 	private Label move2Label;
 	private Button reset = null;
 	private String moves = "";
+	private String moves2 = "";
 	
 
 	@SuppressWarnings("restriction")
@@ -41,6 +42,8 @@ public class ChessBoard extends GridPane {
 		this.move2Label = m2;
 		this.moveLabel.setText(g.getPlayer(Color.WHITE).getName());
 		this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
+		this.moves = g.getPlayer(Color.WHITE).getName() + "\n";
+		this.moves2 = g.getPlayer(Color.BLACK).getName() + "\n";
 		this.reset = b;
 		update();
 		b.textProperty().set("Reset");
@@ -127,10 +130,16 @@ public class ChessBoard extends GridPane {
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
 				Move move = ((Deepov) currentPlayer).takeTurn();
+				GridPiece help = list[move.getOrigin().getX()][move.getOrigin().getY()];
+				if(game.getCurrentTurnColor() == Color.WHITE) {
+					moves += convertMoveText(move.toShortString(), help);
+					moveLabel.textProperty().set(moves);
+				} else {
+					moves2 += convertMoveText(move.toShortString(), help);
+					move2Label.textProperty().set(moves2);
+				}
 				game.makeMove(move);
 
-				moves += playerName+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
-				moveLabel.textProperty().set(moves);
 				try { update();
 				} catch (Exception e) { e.printStackTrace(); }
 			});
@@ -198,15 +207,24 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
-		moves += convertMoveText(move.toShortString());
-		moveLabel.textProperty().set(moves);
+		if(game.getCurrentTurnColor() == Color.WHITE) {
+			moves += convertMoveText(move.toShortString(), null);
+			moveLabel.textProperty().set(moves);
+		} else {	
+			moves2 += convertMoveText(move.toShortString(), null);
+			move2Label.textProperty().set(moves2);
+		}
 		game.makeMove(move);
 		update();
 	}
 	
-	public String convertMoveText(String bad) {
+	public String convertMoveText(String bad, GridPiece gp) {
 		String notation = "";
-		switch (selectedGridPiece.getType()) {
+		GridPiece use = gp;
+		if(gp == null) {
+			use = selectedGridPiece;
+		}
+		switch (use.getType()) {
 			case BISHOP:
 				notation += "B";
 				break;
@@ -225,7 +243,9 @@ public class ChessBoard extends GridPane {
 			default:
 				break;
 		}
-		notation += bad.substring(2, 4) + "\n";
+		char change = bad.charAt(2);
+		char changed = (char)(97 + (104 - (int)change));
+		notation += changed + bad.substring(3, 4) + "\n";
 		return notation;
 	}
 }

@@ -347,6 +347,9 @@ public class App extends Application {
 			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
 			tilePane.getChildren().addAll(gridPane, flowPane);
+			
+			GridPane.setHalignment(moveLabel, HPos.CENTER);
+			GridPane.setHalignment(move2Label, HPos.CENTER);
 
 	        scene = new Scene(tilePane, 600, 400);
 		} else if(sn == SceneName.EndScreen) {
