@@ -1,10 +1,14 @@
 package pieces;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.pieces.Piece;
+import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
 import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Human;
 import com.gousslegend.player.Player;
@@ -23,21 +27,31 @@ public class ChessBoard extends GridPane {
 	private App app = null;
 	private Label turnLabel;
 	private Label moveLabel;
+	private Label move2Label;
 	private Button reset = null;
 	private String moves = "";
+	private String moves2 = "";
 	
 
 	@SuppressWarnings("restriction")
-	public ChessBoard(Game g, App app, Label t, Label m, Button b) throws Exception{
+	public ChessBoard(Game g, App app, Label t, Label m, Label m2, Button b) throws Exception{
 		this.game = g;
 		this.app = app;
 		this.turnLabel = t;
 		this.moveLabel = m;
+		this.move2Label = m2;
+		this.moveLabel.setText(g.getPlayer(Color.WHITE).getName());
+		this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
+		this.moves = g.getPlayer(Color.WHITE).getName() + "\n";
+		this.moves2 = g.getPlayer(Color.BLACK).getName() + "\n";
 		this.reset = b;
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
-			moves = "";
+			this.moves = "";
+			this.moves2 = "";
+			this.moveLabel.setText(g.getPlayer(Color.WHITE).getName());
+			this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
 			game.resetGame();
 			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
@@ -46,7 +60,7 @@ public class ChessBoard extends GridPane {
 	@SuppressWarnings("restriction")
 	private void update() throws Exception{
 		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
-		String playerName = (currentPlayer.getName() == "Deepov") ? "AI" : currentPlayer.getName();
+		String playerName =  currentPlayer.getName();
 		turnLabel.textProperty().set(playerName+"'s Turn");
 		
 		this.getChildren().clear();
@@ -119,10 +133,16 @@ public class ChessBoard extends GridPane {
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
 				Move move = ((Deepov) currentPlayer).takeTurn();
+				GridPiece help = list[move.getOrigin().getX()][move.getOrigin().getY()];
+				if(game.getCurrentTurnColor() == Color.WHITE) {
+					moves += convertMoveText(move.toShortString(), help);
+					moveLabel.textProperty().set(moves);
+				} else {
+					moves2 += convertMoveText(move.toShortString(), help);
+					move2Label.textProperty().set(moves2);
+				}
 				game.makeMove(move);
 
-				moves += playerName+" - From: "+move.getOrigin()+" To: "+move.getDestination()+"\n";
-				moveLabel.textProperty().set(moves);
 				try { update();
 				} catch (Exception e) { e.printStackTrace(); }
 			});
@@ -190,16 +210,41 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
-		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
-		moves += convertMoveText(move.toShortString());
-		moveLabel.textProperty().set(moves);
+		if(game.getCurrentTurnColor() == Color.WHITE) {
+			moves += convertMoveText(move.toShortString(), selectedGridPiece);
+			moveLabel.textProperty().set(moves);
+		} else {	
+			moves2 += convertMoveText(move.toShortString(), selectedGridPiece);
+			move2Label.textProperty().set(moves2);
+		}
 		game.makeMove(move);
 		update();
 	}
 	
-	public String convertMoveText(String bad) {
+	public String convertMoveText(String bad, GridPiece gp) {
 		String notation = "";
-		notation = bad;
+		switch (gp.getType()) {
+			case BISHOP:
+				notation += "B";
+				break;
+			case ROOK:
+				notation += "R";
+				break;
+			case KNIGHT:
+				notation += "N";
+				break;
+			case QUEEN:
+				notation += "Q";
+				break;
+			case KING:
+				notation += "K";
+				break;
+			default:
+				break;
+		}
+		char change = bad.charAt(2);
+		char changed = (char)(97 + (104 - (int)change));
+		notation += changed + bad.substring(3, 4) + "\n";
 		return notation;
 	}
 }

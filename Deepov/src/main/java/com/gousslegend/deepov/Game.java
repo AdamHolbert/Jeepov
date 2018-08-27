@@ -48,7 +48,7 @@ public class Game
 	 */
 	public void resetGame() {
 		if(hasValidModeConfiguration()) {
-			setGameMode(mode);
+			myBoard.setupBoard(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}
@@ -62,27 +62,28 @@ public class Game
 	 */
 	public void makeMove(Move move) {
 		if(move != null) {
-				if(!isStalemate() && !isCheckmate()) {			
-					List<Move> moves = myBoard.getLegalMoves().getList();
+			if(!isStalemate() && !isCheckmate()) {
+				List<Move> moves = myBoard.getLegalMoves().getList();
 
-					boolean validMove = false;
-					for(Move legalmove : moves)
+				boolean validMove = false;
+				for(Move legalmove : moves)
+				{
+					if(move.partialEquals(legalmove))
 					{
-						if(move.partialEquals(legalmove))
-						{
-							validMove = true;
-							break;
-						}
+						validMove = true;
+						break;
 					}
+				}
 
-					if(validMove) {
-						myBoard.executeMove(move);			
-					} else {
-						throw new InvalidParameterException("The move passed in was invalid.");
-					}
+				if(validMove) {
+					myBoard.executeMove(move);	
+					myBoard.updatePinnedPieces();
+				} else {
+					throw new InvalidParameterException("The move passed in was invalid.");
 				}
 			}
 		}
+	}
 	
 	/**
 	 * This will return an instance of the player whose color equals the color passed in.
@@ -101,7 +102,7 @@ public class Game
 	{
 		if (isCheckmate())
 		{
-			return getPlayer(myBoard.getColorToPlay());
+			return getPlayer(myBoard.getColorToPlay().getOppositeColor());
 		}
 		else
 		{
@@ -111,12 +112,12 @@ public class Game
 	
 	public boolean isStalemate() {
 		checkValidGameConfigurationLogic();
-		return getSelectable().size() == 0;
+		return getSelectable().size() == 0 && !myBoard.isCheck(getCurrentTurnColor());
 	}
 	
 	public boolean isCheckmate() {
 		checkValidGameConfigurationLogic();
-		return myBoard.isCheckmate();
+		return getSelectable().size() == 0 && myBoard.isCheck(getCurrentTurnColor());
 	}
 	
 	public Player getNewComputerPlayer() {

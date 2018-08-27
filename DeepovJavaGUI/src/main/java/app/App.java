@@ -323,19 +323,35 @@ public class App extends Application {
 			moveLabel.setWrapText(true);
 			moveLabel.setTextAlignment(TextAlignment.CENTER);
 			
+			Label move2Label = new Label();
+			move2Label.setWrapText(true);
+			move2Label.setTextAlignment(TextAlignment.CENTER);
+			
+			GridPane gp = new GridPane();
+			ColumnConstraints col = new ColumnConstraints();
+			col.setPercentWidth(50);
+			gp.getColumnConstraints().addAll(col, col);
+			gp.add(moveLabel, 0, 0);
+			gp.add(move2Label, 1, 0);
+			
 			Button resetBtn = new Button();
 			resetBtn.setStyle("-fx-font-size: 18; " + BUTTON_STYLE);
 			
 			ChessBoard gridPane = null;
-			try { gridPane = new ChessBoard(g, this, turnLabel, moveLabel, resetBtn);
+			try { gridPane = new ChessBoard(g, this, turnLabel, moveLabel, move2Label, resetBtn);
 			} catch (Exception e) { e.printStackTrace(); }
 			
 			FlowPane flowPane = new FlowPane();
 			flowPane.orientationProperty().set(Orientation.VERTICAL);
-			flowPane.getChildren().addAll(resetBtn, turnLabel, moveLabel);
+			flowPane.getChildren().addAll(resetBtn, turnLabel, gp);
+			flowPane.setPadding(new Insets(5, 0, 0, 20));
+			flowPane.setColumnHalignment(HPos.CENTER);
 			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
 			tilePane.getChildren().addAll(gridPane, flowPane);
+			
+			GridPane.setHalignment(moveLabel, HPos.CENTER);
+			GridPane.setHalignment(move2Label, HPos.CENTER);
 
 	        scene = new Scene(tilePane, 600, 400);
 		} else if(sn == SceneName.EndScreen) {
