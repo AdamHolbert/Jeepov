@@ -48,7 +48,7 @@ public class Game
 	 */
 	public void resetGame() {
 		if(hasValidModeConfiguration()) {
-			setGameMode(mode);
+			myBoard.setupBoard(mode);
 		} else {
 			throw new InvalidParameterException("The game can not be reset if it has no game mode set.");
 		}
