@@ -62,27 +62,28 @@ public class Game
 	 */
 	public void makeMove(Move move) {
 		if(move != null) {
-				if(!isStalemate() && !isCheckmate()) {			
-					List<Move> moves = myBoard.getLegalMoves().getList();
+			if(!isStalemate() && !isCheckmate()) {
+				List<Move> moves = myBoard.getLegalMoves().getList();
 
-					boolean validMove = false;
-					for(Move legalmove : moves)
+				boolean validMove = false;
+				for(Move legalmove : moves)
+				{
+					if(move.partialEquals(legalmove))
 					{
-						if(move.partialEquals(legalmove))
-						{
-							validMove = true;
-							break;
-						}
+						validMove = true;
+						break;
 					}
+				}
 
-					if(validMove) {
-						myBoard.executeMove(move);			
-					} else {
-						throw new InvalidParameterException("The move passed in was invalid.");
-					}
+				if(validMove) {
+					myBoard.executeMove(move);	
+					myBoard.updatePinnedPieces();
+				} else {
+					throw new InvalidParameterException("The move passed in was invalid.");
 				}
 			}
 		}
+	}
 	
 	/**
 	 * This will return an instance of the player whose color equals the color passed in.
