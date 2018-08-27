@@ -344,7 +344,9 @@ public class App extends Application {
 			
 			FlowPane flowPane = new FlowPane();
 			flowPane.orientationProperty().set(Orientation.VERTICAL);
-			flowPane.getChildren().addAll(turnLabel, gp);
+			flowPane.getChildren().addAll(resetBtn, turnLabel, gp);
+			flowPane.setPadding(new Insets(5, 0, 0, 20));
+			flowPane.setColumnHalignment(HPos.CENTER);
 			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
 			tilePane.getChildren().addAll(gridPane, flowPane);

@@ -102,7 +102,7 @@ public class Game
 	{
 		if (isCheckmate())
 		{
-			return getPlayer(myBoard.getColorToPlay());
+			return getPlayer(myBoard.getColorToPlay().getOppositeColor());
 		}
 		else
 		{

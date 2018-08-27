@@ -48,7 +48,10 @@ public class ChessBoard extends GridPane {
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
-			moves = "";
+			this.moves = "";
+			this.moves2 = "";
+			this.moveLabel.setText(g.getPlayer(Color.WHITE).getName());
+			this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
 			game.resetGame();
 			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
