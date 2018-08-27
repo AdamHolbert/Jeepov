@@ -211,10 +211,10 @@ public class ChessBoard extends GridPane {
 	
 	public void makeMove(Move move) throws Exception{
 		if(game.getCurrentTurnColor() == Color.WHITE) {
-			moves += convertMoveText(move.toShortString(), null);
+			moves += convertMoveText(move.toShortString(), selectedGridPiece);
 			moveLabel.textProperty().set(moves);
 		} else {	
-			moves2 += convertMoveText(move.toShortString(), null);
+			moves2 += convertMoveText(move.toShortString(), selectedGridPiece);
 			move2Label.textProperty().set(moves2);
 		}
 		game.makeMove(move);
@@ -223,11 +223,7 @@ public class ChessBoard extends GridPane {
 	
 	public String convertMoveText(String bad, GridPiece gp) {
 		String notation = "";
-		GridPiece use = gp;
-		if(gp == null) {
-			use = selectedGridPiece;
-		}
-		switch (use.getType()) {
+		switch (gp.getType()) {
 			case BISHOP:
 				notation += "B";
 				break;
