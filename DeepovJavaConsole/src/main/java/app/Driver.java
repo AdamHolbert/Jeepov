@@ -6,13 +6,14 @@ public class Driver {
 
 	public static void main(String[] args) {
 		System.out.println("In console project");
-		Game g = new Game();
+		UIConsole ui = new UIConsole();
+		Game g;
 		do {
-			g.buildGame();
-			while(g.getWinner() == null) {
-				g.printBoard();
-				g.makeMove(UIConsole.getMove(g.getSelectable(),g.getCurrentPlayer()));
+			g = ui.buildGame();
+			while(ui.getWinner() == null) {
+				ui.printBoard();
+				g.makeMove(ui.getMove(g.getSelectable(),g.getCurrentPlayer()));
 			}
-		} while(UIConsole.getContinue());
+		} while(ui.getContinue());
 	}
 }
