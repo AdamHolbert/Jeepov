@@ -111,12 +111,12 @@ public class Game
 	
 	public boolean isStalemate() {
 		checkValidGameConfigurationLogic();
-		return getSelectable().size() == 0 && myBoard.isCheck(getCurrentTurnColor());
+		return getSelectable().size() == 0 && !myBoard.isCheck(getCurrentTurnColor());
 	}
 	
 	public boolean isCheckmate() {
 		checkValidGameConfigurationLogic();
-		return myBoard.isCheckmate() && myBoard.isCheck(getCurrentTurnColor());
+		return getSelectable().size() == 0 && myBoard.isCheck(getCurrentTurnColor());
 	}
 	
 	public Player getNewComputerPlayer() {
