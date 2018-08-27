@@ -1,10 +1,14 @@
 package pieces;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.pieces.Piece;
+import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
 import com.gousslegend.player.Deepov;
 import com.gousslegend.player.Human;
 import com.gousslegend.player.Player;
@@ -23,16 +27,20 @@ public class ChessBoard extends GridPane {
 	private App app = null;
 	private Label turnLabel;
 	private Label moveLabel;
+	private Label move2Label;
 	private Button reset = null;
 	private String moves = "";
 	
 
 	@SuppressWarnings("restriction")
-	public ChessBoard(Game g, App app, Label t, Label m, Button b) throws Exception{
+	public ChessBoard(Game g, App app, Label t, Label m, Label m2, Button b) throws Exception{
 		this.game = g;
 		this.app = app;
 		this.turnLabel = t;
 		this.moveLabel = m;
+		this.move2Label = m2;
+		this.moveLabel.setText(g.getPlayer(Color.WHITE).getName());
+		this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
 		this.reset = b;
 		update();
 		b.textProperty().set("Reset");
@@ -190,7 +198,6 @@ public class ChessBoard extends GridPane {
 	}
 	
 	public void makeMove(Move move) throws Exception{
-		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
 		moves += convertMoveText(move.toShortString());
 		moveLabel.textProperty().set(moves);
 		game.makeMove(move);
@@ -199,7 +206,26 @@ public class ChessBoard extends GridPane {
 	
 	public String convertMoveText(String bad) {
 		String notation = "";
-		notation = bad;
+		switch (selectedGridPiece.getType()) {
+			case BISHOP:
+				notation += "B";
+				break;
+			case ROOK:
+				notation += "R";
+				break;
+			case KNIGHT:
+				notation += "N";
+				break;
+			case QUEEN:
+				notation += "Q";
+				break;
+			case KING:
+				notation += "K";
+				break;
+			default:
+				break;
+		}
+		notation += bad.substring(2, 4) + "\n";
 		return notation;
 	}
 }
