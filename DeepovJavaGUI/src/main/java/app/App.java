@@ -323,10 +323,12 @@ public class App extends Application {
 			Label moveLabel = new Label();
 			moveLabel.setWrapText(true);
 			moveLabel.setTextAlignment(TextAlignment.CENTER);
+			moveLabel.setStyle("-fx-font-size: 18");
 			
 			Label move2Label = new Label();
 			move2Label.setWrapText(true);
 			move2Label.setTextAlignment(TextAlignment.CENTER);
+			move2Label.setStyle("-fx-font-size: 18");
 			
 			GridPane gp = new GridPane();
 			ColumnConstraints col = new ColumnConstraints();
