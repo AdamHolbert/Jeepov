@@ -8,7 +8,6 @@ import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.board.Board;
-import com.gousslegend.deepov.board.Board;
 
 public class Rook extends Piece
 {

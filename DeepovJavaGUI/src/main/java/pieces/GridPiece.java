@@ -1,8 +1,5 @@
 package pieces;
-import javafx.scene.control.*;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Move;
@@ -10,14 +7,11 @@ import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.pieces.Piece;
 import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
+@SuppressWarnings("restriction")
 public class GridPiece extends Button{
 	public String bgColor;
 	public Color pieceColor;
@@ -28,7 +22,6 @@ public class GridPiece extends Button{
 	private boolean isSelected = false;
 	private Move move;
 	
-	@SuppressWarnings("restriction")
 	public GridPiece(String fileName, Color bgColor, ChessBoard board, Piece currentPiece) throws Exception{
 		this.name = fileName;
 		this.board = board;

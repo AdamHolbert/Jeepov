@@ -1,25 +1,22 @@
 package pieces;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.gousslegend.deepov.Color;
 import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Move;
 import com.gousslegend.deepov.MoveList;
 import com.gousslegend.deepov.pieces.Piece;
-import com.gousslegend.deepov.pieces.Piece.ChessPieceType;
 import com.gousslegend.player.Deepov;
-import com.gousslegend.player.Human;
 import com.gousslegend.player.Player;
 
 import app.App;
 import app.SceneName;
 import javafx.animation.PauseTransition;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import javafx.scene.control.*;
 
+@SuppressWarnings("restriction")
 public class ChessBoard extends GridPane {
 	GridPiece[][] list = new GridPiece[8][8];
 	private Game game = null;
@@ -28,12 +25,9 @@ public class ChessBoard extends GridPane {
 	private Label turnLabel;
 	private Label moveLabel;
 	private Label move2Label;
-	private Button reset = null;
 	private String moves = "";
 	private String moves2 = "";
 	
-
-	@SuppressWarnings("restriction")
 	public ChessBoard(Game g, App app, Label t, Label m, Label m2, Button b) throws Exception{
 		this.game = g;
 		this.app = app;
@@ -44,7 +38,6 @@ public class ChessBoard extends GridPane {
 		this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
 		this.moves = g.getPlayer(Color.WHITE).getName() + "\n";
 		this.moves2 = g.getPlayer(Color.BLACK).getName() + "\n";
-		this.reset = b;
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
@@ -54,7 +47,6 @@ public class ChessBoard extends GridPane {
 		});
 	}
 	
-	@SuppressWarnings("restriction")
 	private void update() throws Exception{
 		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
 		String playerName = (currentPlayer.getName() == "Deepov") ? "AI" : currentPlayer.getName();
@@ -126,7 +118,6 @@ public class ChessBoard extends GridPane {
 			}
 		}
 		if(currentPlayer instanceof Deepov) {
-			@SuppressWarnings("restriction")
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
 				Move move = ((Deepov) currentPlayer).takeTurn();

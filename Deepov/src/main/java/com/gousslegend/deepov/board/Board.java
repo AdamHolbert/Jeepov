@@ -195,8 +195,8 @@ public abstract class Board
 	public void setupBoard(GameMode mode)
 	{
 		ChessPieceType[] backRowOrder = 
-			{ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.BISHOP, ChessPieceType.QUEEN, 
-					ChessPieceType.KING, ChessPieceType.BISHOP, ChessPieceType.KNIGHT, ChessPieceType.ROOK };
+			{ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.BISHOP, ChessPieceType.KING, 
+					ChessPieceType.QUEEN, ChessPieceType.BISHOP, ChessPieceType.KNIGHT, ChessPieceType.ROOK };
 		
 		if(mode == GameMode.CHESS960) {
 			do {

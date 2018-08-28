@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gousslegend.deepov.Color;
-import com.gousslegend.deepov.Game;
 import com.gousslegend.deepov.Position;
 import com.gousslegend.deepov.board.ArrayBoard;
 import com.gousslegend.deepov.board.Board;
@@ -24,10 +23,10 @@ public class Utils
 		String[] spaceSplit = fen.split(" ");
 		String[] piecesByRank = spaceSplit[0].split("/");
 		String colorToplay = spaceSplit[1];
-		String castlingAvailability = spaceSplit[2];
-		String enPassantTarget = spaceSplit[3];
-		String halfMoveNumber = spaceSplit[4];
-		String MoveNumber = spaceSplit[5];
+//		String castlingAvailability = spaceSplit[2];
+//		String enPassantTarget = spaceSplit[3];
+//		String halfMoveNumber = spaceSplit[4];
+//		String MoveNumber = spaceSplit[5];
 
 		int rank = 7;
 		for (String pieces : piecesByRank)
