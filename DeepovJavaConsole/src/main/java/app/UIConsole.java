@@ -180,8 +180,12 @@ public class UIConsole  {
 	public Player getWinner() {
 		if(forfeit) {
 			return g.getPlayer(g.getCurrentTurnColor().getOppositeColor());
-		}else {
-			return g.getWinner();
+		} else {
+			if(g.getWinner() != null) {
+				return g.getPlayer(g.getCurrentTurnColor().getOppositeColor());
+			} else {
+				return null;
+			}
 		}
 	}
 	
@@ -287,5 +291,32 @@ public class UIConsole  {
 		}
 		System.out.println("   ________________");
 		System.out.println("    a b c d e f g h");
+	}
+	
+	public void printFinalBoard() {
+		Piece board[][] = new Piece[8][8];
+		List<Piece> pieces = g.getBoardPieces();
+		
+		for(Piece p : pieces) {
+			board[p.getPosition().getX()][p.getPosition().getY()] = p;
+		}
+		
+		for(int i = 0; i < 8; i++) {
+			System.out.print((i+1) + "|  ");
+			for(int j = 0; j < 8; j++) {
+				if(board[j][i] != null) {
+					System.out.print(board[j][i].getChar()+" ");
+				} else {
+					System.out.print("* ");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println("   ________________");
+		System.out.println("    a b c d e f g h");
+	}
+
+	public void printWinner(Player winner) {
+		sendMessage(winner.getName() + " won!");
 	}
 }

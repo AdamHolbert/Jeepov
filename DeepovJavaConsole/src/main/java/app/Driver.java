@@ -10,10 +10,12 @@ public class Driver {
 		Game g;
 		do {
 			g = ui.buildGame();
-			while(ui.getWinner() == null) {
+			do {
 				ui.printBoard();
 				g.makeMove(ui.getMove(g.getSelectable(),g.getCurrentPlayer()));
-			}
+			} while(ui.getWinner() == null);
+			ui.printFinalBoard();
+			ui.printWinner(ui.getWinner());
 		} while(ui.getContinue());
 	}
 }

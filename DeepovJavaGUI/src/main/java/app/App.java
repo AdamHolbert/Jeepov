@@ -22,14 +22,15 @@ import javafx.util.Duration;
 import pieces.ChessBoard;
 import javafx.geometry.Orientation;
 import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 
 @SuppressWarnings("restriction")
 public class App extends Application {
 	Game g;
 	Stage stage;
 	Color computerColor;
-	final double WIDTH = 500;
-	final double HEIGHT = 500;
+	final double WIDTH = 600;
+	final double HEIGHT = 600;
 	final String PANE_STYLE = "-fx-background-color: linear-gradient(#4578ee, #12349d);";
 	final String BUTTON_STYLE = "-fx-background-color: linear-gradient(#77a9ff, #ffffff);";
 	
@@ -280,12 +281,12 @@ public class App extends Application {
 			label1.setTextAlignment(TextAlignment.CENTER);
 			
 			TextField tf = new TextField();
-			tf.setMaxWidth(WIDTH - 300);
+			tf.setMaxWidth(WIDTH - 400);
 			tf.setText("Player 1");
 			tf.setFocusTraversable(false);
 			
 			TextField tf1 = new TextField();
-			tf1.setMaxWidth(WIDTH - 300);
+			tf1.setMaxWidth(WIDTH - 400);
 			tf1.setText("Player 2");
 			tf1.setFocusTraversable(false);
 			
@@ -322,10 +323,12 @@ public class App extends Application {
 			Label moveLabel = new Label();
 			moveLabel.setWrapText(true);
 			moveLabel.setTextAlignment(TextAlignment.CENTER);
+			moveLabel.setStyle("-fx-font-size: 18");
 			
 			Label move2Label = new Label();
 			move2Label.setWrapText(true);
 			move2Label.setTextAlignment(TextAlignment.CENTER);
+			move2Label.setStyle("-fx-font-size: 18");
 			
 			GridPane gp = new GridPane();
 			ColumnConstraints col = new ColumnConstraints();
@@ -335,23 +338,39 @@ public class App extends Application {
 			gp.add(move2Label, 1, 0);
 			
 			Button resetBtn = new Button();
-			resetBtn.setStyle("-fx-font-size: 18; " + BUTTON_STYLE);
+			resetBtn.setStyle("-fx-font-size: 40; " + BUTTON_STYLE);
 			
 			ChessBoard gridPane = null;
 			try { gridPane = new ChessBoard(g, this, turnLabel, moveLabel, move2Label, resetBtn);
 			} catch (Exception e) { e.printStackTrace(); }
+			gridPane.setStyle("-fx-background-color: #fff;");
 			
 			FlowPane flowPane = new FlowPane();
 			flowPane.orientationProperty().set(Orientation.VERTICAL);
 			flowPane.getChildren().addAll(resetBtn, turnLabel, gp);
+			flowPane.setPadding(new Insets(0, 0, 0, 20));
+			flowPane.setColumnHalignment(HPos.CENTER);
 			
 			TilePane tilePane = new TilePane(Orientation.VERTICAL);
 			tilePane.getChildren().addAll(gridPane, flowPane);
 			
+			GridPane gp2 = new GridPane();
+			RowConstraints row = new RowConstraints();
+			row.setPercentHeight(70);
+			RowConstraints row1 = new RowConstraints();
+			row1.setPercentHeight(30);
+			gp2.getRowConstraints().addAll(row, row1);
+			gp2.add(tilePane, 0, 0);
+			gp2.add(resetBtn, 0, 1);
+			gp2.setStyle(PANE_STYLE);
+			
+			GridPane.setValignment(moveLabel, VPos.TOP);
+			GridPane.setValignment(move2Label, VPos.TOP);
+			GridPane.setHalignment(resetBtn, HPos.CENTER);
 			GridPane.setHalignment(moveLabel, HPos.CENTER);
 			GridPane.setHalignment(move2Label, HPos.CENTER);
 
-	        scene = new Scene(tilePane, 600, 400);
+	        scene = new Scene(gp2, WIDTH, HEIGHT);
 		} else if(sn == SceneName.EndScreen) {
 			String endString = "";
 			if(g.isStalemate()) {

@@ -41,7 +41,10 @@ public class ChessBoard extends GridPane {
 		update();
 		b.textProperty().set("Reset");
 		b.setOnAction((event) -> {
-			moves = "";
+			this.moves = "";
+			this.moves2 = "";
+			this.moveLabel.setText(g.getPlayer(Color.WHITE).getName());
+			this.move2Label.setText(g.getPlayer(Color.BLACK).getName());
 			game.resetGame();
 			try { update(); } catch (Exception e) { e.printStackTrace(); }
 		});
@@ -49,8 +52,7 @@ public class ChessBoard extends GridPane {
 	
 	private void update() throws Exception{
 		Player currentPlayer = game.getPlayer(game.getCurrentTurnColor());
-		String playerName = (currentPlayer.getName() == "Deepov") ? "AI" : currentPlayer.getName();
-		turnLabel.textProperty().set(playerName+"'s Turn");
+		turnLabel.textProperty().set(currentPlayer.getName()+"'s Turn");
 		
 		this.getChildren().clear();
 		if(game.isCheckmate() || game.isStalemate()) {
@@ -76,7 +78,7 @@ public class ChessBoard extends GridPane {
 			String tempPiece = "";
 			Color bgColor = list[7 - x][7 - y].bgColor.equals("#000") ? Color.BLACK : Color.WHITE;
 			
-			String simpleName =  currentPiece.getClass().getSimpleName();
+			String simpleName = currentPiece.getClass().getSimpleName();
 			Color color = currentPiece.getColor();
 			
 			if(simpleName.equals("Pawn") && color == Color.BLACK){
@@ -121,7 +123,7 @@ public class ChessBoard extends GridPane {
 			PauseTransition delay = new PauseTransition(Duration.seconds(2));
 			delay.setOnFinished( event -> {
 				Move move = ((Deepov) currentPlayer).takeTurn();
-				GridPiece help = list[move.getOrigin().getX()][move.getOrigin().getY()];
+				GridPiece help = list[7 - move.getOrigin().getX()][7 - move.getOrigin().getY()];
 				if(game.getCurrentTurnColor() == Color.WHITE) {
 					moves += convertMoveText(move.toShortString(), help);
 					moveLabel.textProperty().set(moves);
@@ -227,7 +229,10 @@ public class ChessBoard extends GridPane {
 			case KING:
 				notation += "K";
 				break;
+			case PAWN:
+				break;
 			default:
+				System.out.println("Type is '" + gp.getType() +"'");
 				break;
 		}
 		char change = bad.charAt(2);
